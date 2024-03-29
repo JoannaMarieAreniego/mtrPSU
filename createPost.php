@@ -110,13 +110,23 @@
             border-radius: 5px;
             resize: vertical;
         }
+        .btn.active {
+            background-color: yellow;
+            color: black
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>PSU</h1>
         <a href="profile.php" class="btn">Profile</a>
-        <a href="createPost.php" class="btn">Create Post</a>
+        <a href="3newsfeed.php" class="btn">Newsfeed</a>
+        <a href="createPost.php" class="btn active">Create Post</a>
+        <a href="logout.php" class="btn">Logout</a>
     </header>
 
     <h1>Create a Post</h1>

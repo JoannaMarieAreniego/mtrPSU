@@ -43,12 +43,15 @@ $result = $conn->query($sql);
             color: #f8f9fa;
             padding: 20px;
             text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
         }
-
+        
         .container {
-         
             max-width: 1200px;
-            margin: 20px auto;
+            margin: 120px auto 20px;
             padding: 0 20px;
         }
 
@@ -110,21 +113,31 @@ $result = $conn->query($sql);
                 padding: 0 10px;
             }
         }
+        .post-img {
+            max-width: 100%;
+            height: 200px; 
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .btn.active {
+            background-color: yellow;
+            color: black
+        }
 
-.post-img {
-    max-width: 100%;
-    height: 200px; 
-    object-fit: cover;
-    border-radius: 8px;
-}
+        .btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 
 <header>
     <h1>PSU</h1>
+    <a href="profile.php" class="btn active">Profile</a>
     <a href="3newsfeed.php" class="btn">Newsfeed</a>
     <a href="createPost.php" class="btn">Create Post</a>
+    <a href="logout.php" class="btn">Logout</a>
 </header>
 
 <div class="container">
@@ -134,7 +147,7 @@ $result = $conn->query($sql);
         while ($row = $result->fetch_assoc()) {
             ?>
              <div class="post" id="post_<?php echo $row['postID'] ?>">
-                <h2><?php echo $row['title'] ?></h2>
+                <h2><a href="postp_details.php?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
                 <p><?php echo $row['content'] ?></p>
                 <?php if ($row['postImage']): ?>
                     <img src="<?php echo $row['postImage'] ?>" alt="Post Image" class="post-img">
@@ -152,12 +165,10 @@ $result = $conn->query($sql);
                     <img src="<?php echo $row['postImage5'] ?>" alt="Post Image" class="post-img">
                 <?php endif; ?>
 
-                <p class="post-meta">Posted on <?php echo $row['created_at'] ?></p>
+                <p class="post-meta">Posted: <?php echo formatPostDate($row['created_at']); ?></p>
+
                 <a href="#" class="btn btn-edit" onclick="editPost(<?php echo $row['postID'] ?>)" >Edit</a>
                 <button class="btn btn-delete" id="deleteBtn_<?php echo $row['postID'] ?>" onclick="deletePost(<?php echo $row['postID'] ?>)">Delete</button>
-
-             
-
             </div>
             <?php
         }
@@ -174,9 +185,9 @@ $result = $conn->query($sql);
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-function editPost(postId) {
-    window.location.href = "editPost.php?post_id=" + postId;
-}
+    function editPost(postId) {
+        window.location.href = "editPost.php?post_id=" + postId;
+    }
 
     function deletePost(postId) {
     if (confirm("Are you sure you want to delete this post?")) {
@@ -191,10 +202,31 @@ function editPost(postId) {
         });
     }
 }
-
-
-
 </script>
-
 </body>
 </html>
+
+<?php
+    function formatPostDate($postDate) {
+        date_default_timezone_set('Asia/Manila');
+
+        $currentTime = time();
+        $postTime = strtotime($postDate);
+        $timeDiff = $currentTime - $postTime;
+        
+        if ($timeDiff < 60) {
+            return "a few seconds ago";
+        } elseif ($timeDiff < 3600) {
+            $minutes = floor($timeDiff / 60);
+            return "$minutes minute" . ($minutes > 1 ? "s" : "") . " ago";
+        } elseif ($timeDiff < 86400) {
+            $hours = floor($timeDiff / 3600);
+            return "$hours hour" . ($hours > 1 ? "s" : "") . " ago";
+        } elseif ($timeDiff < 604800) {
+            $days = floor($timeDiff / 86400);
+            return "$days day" . ($days > 1 ? "s" : "") . " ago";
+        } else {
+            return date("F j, Y", $postTime);
+        }
+    }
+?>
