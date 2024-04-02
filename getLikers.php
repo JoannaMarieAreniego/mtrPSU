@@ -4,7 +4,7 @@ include("0conn.php");
 if(isset($_POST['postID']) && !empty($_POST['postID'])) {
     $postID = $_POST['postID'];
 
-    // Get total like count
+
     $sqlCount = "SELECT COUNT(*) as likeCount FROM likes WHERE postID = ?";
     $stmtCount = $conn->prepare($sqlCount);
     $stmtCount->bind_param("i", $postID);
@@ -13,7 +13,7 @@ if(isset($_POST['postID']) && !empty($_POST['postID'])) {
     $rowCount = $resultCount->fetch_assoc();
     $likeCount = $rowCount['likeCount'];
 
-    // Get usernames of users who liked the post
+
     $sqlUsers = "SELECT users.username FROM likes INNER JOIN users ON likes.studID = users.studID WHERE likes.postID = ?";
     $stmtUsers = $conn->prepare($sqlUsers);
     $stmtUsers->bind_param("i", $postID);

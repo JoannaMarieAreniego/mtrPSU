@@ -266,8 +266,8 @@ if(isset($_POST['delete_comment'])) {
         </form>
     </div>
     <footer>
-        <p>Pangasinan State University lorem epsum</p>
-        <p>&copy; 2023 Jane</p>
+        <p>Pangasinan State University</p>
+        <p>© 2024 PSUnian Space</p>
     </footer>
 
     <script>

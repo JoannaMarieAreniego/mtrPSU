@@ -2,9 +2,10 @@
 session_start();
 
 if (!isset($_SESSION['studID'])) {
-    echo "You are not logged in. Please log in to view your profile.";
+    header("Location: logintry.php");
     exit;
 }
+
 
 include("0conn.php");
 
@@ -13,6 +14,7 @@ $user_id = $_SESSION['studID'];
 $sql = "SELECT * FROM posts WHERE studID = '$user_id' ORDER BY created_at DESC";
 $result = $conn->query($sql);
 
+
 ?>
 
 <!DOCTYPE html>
@@ -20,37 +22,39 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Profile</title>
 
-    <style>
-         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <style>    
+   body {
+    font-family: "Arial Black", sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #343a40;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
+.container {
+    padding: 20px;
+    min-width: 1200px;
+    margin: 0 auto;
+}
 
-        header {
-            background-color: #343a40;
-            color: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-        
+footer {
+    background-color: #0927D8;
+    color: #f8f9fa;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+    width: 100%;
+}
+
+
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 120px auto 20px;
             padding: 0 20px;
         }
@@ -66,7 +70,8 @@ $result = $conn->query($sql);
 
         .post h2 {
             margin-bottom: 10px;
-            color: #007bff;
+        color: #007bff;
+        cursor: pointer;
         }
 
         .post p {
@@ -77,35 +82,20 @@ $result = $conn->query($sql);
             color: #6c757d;
             font-size: 0.8rem;
         }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
-        .btn-delete {
+      .btn-delete {
+            font-family: "Arial Black", sans-serif;
+            font-size: 14px;
             position: absolute;
             top: 10px;
             right: 10px;
             z-index: 1;
+            background-color: #7D0A0A;
         }
 
         .btn-edit {
             position: absolute;
             top: 10px;
-            right: 100px;
-        }
-        footer {
-            background-color: #343a40;
-            color: #f8f9fa;
-            text-align: center;
-            padding: 20px;
-            margin-top: 20px;
+            right: 120px;
         }
 
         @media only screen and (max-width: 600px) {
@@ -119,25 +109,23 @@ $result = $conn->query($sql);
             object-fit: cover;
             border-radius: 8px;
         }
-        
-        .btn.active {
-            background-color: yellow;
-            color: black
-        }
 
-        .btn:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>
 
+
 <header>
-    <h1>PSU</h1>
-    <a href="profile.php" class="btn active">Profile</a>
-    <a href="3newsfeed.php" class="btn">Newsfeed</a>
-    <a href="createPost.php" class="btn">Create Post</a>
-    <a href="logout.php" class="btn">Logout</a>
+    <div class="logo">
+        <img src="images/psuLOGO.png" alt="">
+    </div>
+    <h1>Pangasinan State University</h1>
+    <nav>
+        <a href="profile.php" class="btn active">Profile</a>
+        <a href="3newsfeed.php" class="btn">Newsfeed</a>
+        <a href="createPost.php" class="btn">Create Post</a>
+        <a href="logout.php" class="btn">Logout</a>
+    </nav>
 </header>
 
 <div class="container">
@@ -147,7 +135,7 @@ $result = $conn->query($sql);
         while ($row = $result->fetch_assoc()) {
             ?>
              <div class="post" id="post_<?php echo $row['postID'] ?>">
-                <h2><a href="postp_details.php?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
+                <h2><?php echo $row['title'] ?></a></h2>
                 <p><?php echo $row['content'] ?></p>
                 <?php if ($row['postImage']): ?>
                     <img src="<?php echo $row['postImage'] ?>" alt="Post Image" class="post-img">
@@ -177,10 +165,58 @@ $result = $conn->query($sql);
     }
     ?>
 </div>
+<div class="container">
+
+<?php 
+$user_id = $_SESSION['studID'];
+
+// Query to retrieve shared posts by the current user
+$sql_shared = "SELECT posts.*, shared_posts.shared_at 
+               FROM shared_posts 
+               INNER JOIN posts ON shared_posts.postID = posts.postID 
+               WHERE shared_posts.shared_by_studID = '$user_id' 
+               ORDER BY shared_posts.shared_at DESC";
+
+$result_shared = $conn->query($sql_shared);
+?>
+
+<h1>My Shared Posts</h1>
+    <?php
+    if ($result_shared !== false && $result_shared->num_rows > 0) {
+        while ($row_shared = $result_shared->fetch_assoc()) {
+            ?>
+            <div class="post" id="post_<?php echo $row_shared['postID'] ?>">
+                <h2><?php echo $row_shared['title'] ?></h2>
+                <p><?php echo $row_shared['content'] ?></p>
+                <?php if ($row_shared['postImage']): ?>
+                    <img src="<?php echo $row_shared['postImage'] ?>" alt="Post Image" class="post-img">
+                <?php endif; ?>
+                <?php if ($row_shared['postImage2']): ?>
+                    <img src="<?php echo $row_shared['postImage2'] ?>" alt="Post Image" class="post-img">
+                <?php endif; ?>
+                <?php if ($row_shared['postImage3']): ?>
+                    <img src="<?php echo $row_shared['postImage3'] ?>" alt="Post Image" class="post-img">
+                <?php endif; ?>
+                <?php if ($row_shared['postImage4']): ?>
+                    <img src="<?php echo $row_shared['postImage4'] ?>" alt="Post Image" class="post-img">
+                <?php endif; ?>
+                <?php if ($row_shared['postImage5']): ?>
+                    <img src="<?php echo $row_shared['postImage5'] ?>" alt="Post Image" class="post-img">
+                <?php endif; ?>
+                <p class="post-meta">Shared: <?php echo formatPostDate($row_shared['shared_at']); ?></p>
+                <button class="btn btn-delete" onclick="deleteSharedPost(<?php echo $row_shared['postID'] ?>)">Delete</button>
+            </div>
+            <?php
+        }
+    } else {
+        echo "No shared posts found.";
+    }
+    ?>
+</div>
 
 <footer>
-    <p>Pangasinan State University lorem epsum</p>
-    <p>&copy; 2023 Jane</p>
+        <p>Pangasinan State University</p>
+        <p>© 2024 PSUnian Space</p>
 </footer>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -202,6 +238,20 @@ $result = $conn->query($sql);
         });
     }
 }
+function deleteSharedPost(postId) {
+        if (confirm("Are you sure you want to delete this shared post?")) {
+            $.ajax({
+                url: 'deleteSharedPost.php',
+                method: 'POST',
+                data: { post_id: postId },
+                success: function(response){
+                    alert(response);
+                    $('#post_' + postId).remove();
+                    location.reload();
+                }
+            });
+        }
+    }
 </script>
 </body>
 </html>

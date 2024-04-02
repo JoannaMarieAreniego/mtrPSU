@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2024 at 01:40 AM
+-- Generation Time: Apr 02, 2024 at 02:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,18 +38,6 @@ CREATE TABLE `comments` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `images`
---
-
-CREATE TABLE `images` (
-  `imageID` int(11) NOT NULL,
-  `postID` int(11) NOT NULL,
-  `image_path` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `likes`
 --
 
@@ -78,27 +66,6 @@ CREATE TABLE `posts` (
   `postImage4` text NOT NULL,
   `postImage5` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `posts`
---
-
-INSERT INTO `posts` (`postID`, `title`, `content`, `studID`, `created_at`, `postImage`, `postImage2`, `postImage3`, `postImage4`, `postImage5`) VALUES
-(64, 'as', 'as', '22-UR-0776', '2024-03-28 06:53:52', 'images/menu-btn.png', '', '', '', ''),
-(65, 'as', 'as', '22-UR-0776', '2024-03-28 06:54:07', 'images/menu-btn.png', '', '', '', ''),
-(66, 'sds', 'asa', '22-UR-0776', '2024-03-28 06:57:46', '', '', '', '', ''),
-(67, 'Michelle Apartelle', 'asas', '22-UR-0776', '2024-03-28 06:59:36', '', '', '', '', ''),
-(68, 'sds', 'ASD', '22-UR-0776', '2024-03-28 07:00:15', '', '', '', '', ''),
-(69, 'Michelle Apartelle', 'ASA', '22-UR-0776', '2024-03-28 07:03:40', 'images/menu-btn.png', '', '', '', ''),
-(70, 'urdaner', 'asas', '22-UR-0776', '2024-03-28 07:07:56', 'images/menu-btn (2).png', '', '', '', ''),
-(71, 'asasasa', 'SAD', '22-UR-0776', '2024-03-28 07:13:21', 'images/menu-btn.png', '', '', '', ''),
-(72, 'AS', 'SA', '22-UR-0776', '2024-03-28 07:13:55', 'images/menu-btn (2).png', '', '', '', ''),
-(73, 'Michelle Apartelle', 'DD', '22-UR-0776', '2024-03-28 07:15:42', 'images/menu-btn.png', '', '', '', ''),
-(74, 'Michelle Apartelle', 'sd', '22-UR-0776', '2024-03-28 07:18:47', 'images/menu-btn.png', '', '', '', ''),
-(75, 'asasas', 'sadssasa', '22-UR-0776', '2024-03-28 07:22:53', 'images/menu-btn (2).png', '', '', '', ''),
-(78, '12322', '123444', '22-UR-0776', '2024-03-28 07:34:10', 'images/menu-btn (2).png', 'images/menu-btn.png', '', '', ''),
-(83, 'Michelle Apartelle', '12345', '22-UR-0776', '2024-03-28 11:21:10', 'images/menu-btn (2).png', 'images/menu-btn.png', 'images/menu-btn (2).png', 'images/menu-btn.png', 'images/menu-btn (2).png'),
-(92, 'joanna boarding', 'are we falling like.....like snow on the beach', '21-UR-0123', '2024-03-29 00:40:18', 'images/house.png', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -133,8 +100,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`studID`, `firstname`, `lastname`, `username`, `password`) VALUES
-('21-UR-0123', 'Joanna Marie', 'Areniego', 'joanna03', '12345678'),
-('22-UR-0776', 'janelka', 'a5rw', 'JTamayo', '12345');
+('a', 'janela', 'tamayo', 'a', '1'),
+('admin', '', '', 'admin', 'admin123');
 
 --
 -- Indexes for dumped tables
@@ -147,13 +114,6 @@ ALTER TABLE `comments`
   ADD PRIMARY KEY (`commentID`),
   ADD KEY `postID` (`postID`),
   ADD KEY `studID` (`studID`);
-
---
--- Indexes for table `images`
---
-ALTER TABLE `images`
-  ADD PRIMARY KEY (`imageID`),
-  ADD KEY `postID` (`postID`);
 
 --
 -- Indexes for table `likes`
@@ -193,31 +153,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `images`
---
-ALTER TABLE `images`
-  MODIFY `imageID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `likeID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `likeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `postID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `postID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT for table `shared_posts`
 --
 ALTER TABLE `shared_posts`
-  MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -231,12 +185,6 @@ ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`studID`) REFERENCES `users` (`studID`);
 
 --
--- Constraints for table `images`
---
-ALTER TABLE `images`
-  ADD CONSTRAINT `images_ibfk_1` FOREIGN KEY (`postID`) REFERENCES `posts` (`postID`) ON DELETE CASCADE;
-
---
 -- Constraints for table `likes`
 --
 ALTER TABLE `likes`
@@ -247,7 +195,7 @@ ALTER TABLE `likes`
 -- Constraints for table `posts`
 --
 ALTER TABLE `posts`
-  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`studID`) REFERENCES `users` (`studID`);
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`studID`) REFERENCES `users` (`studID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `shared_posts`

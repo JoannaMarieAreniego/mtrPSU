@@ -1,10 +1,35 @@
+<style>
+.post-buttons .btn  {
+display: inline-block;
+padding: 10px 20px;
+background-color: #007bff;
+color: white;
+text-decoration: none;
+border-radius: 50px;
+margin-right: 10px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+font-family: "Arial Black", sans-serif;
+}
+.post-buttons .btn.liked {
+    background-color: yellow;
+    color: #333;
+}
+
+</style>
 <?php
 include("0conn.php");
 session_start();
 
 $currentUserID = $_SESSION['studID'];
 
-$sql = "SELECT posts.*, users.username FROM posts INNER JOIN users ON posts.studID = users.studID ORDER BY posts.created_at DESC";
+$sql = "SELECT posts.*, users.username AS poster_username, shared_posts.shared_by_studID, shared_posts.shared_from_studID, shared_posts.shared_at, sharer.username AS shared_by_username
+FROM posts
+LEFT JOIN users ON posts.studID = users.studID
+LEFT JOIN shared_posts ON posts.postID = shared_posts.postID
+LEFT JOIN users AS sharer ON shared_posts.shared_by_studID = sharer.studID
+ORDER BY COALESCE(shared_posts.shared_at, posts.created_at) DESC
+";
 
 $result = $conn->query($sql);
 
@@ -12,9 +37,12 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         ?>
         <div class="post">
-            <h2><a href="post_details.php?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
+            <h2><a href="#?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
+            <?php if (!empty($row['shared_by_studID'])): ?>
+                <p><em>Shared by <?php echo $row['shared_by_username']; ?>  <?php echo formatSharedDate($row['shared_at']); ?></em></p>
+            <?php endif; ?>
             <p><?php echo $row['content'] ?></p>
-            <div class="image-container">
+            <div class="post-container">
                 <?php 
                 $postImages = array($row['postImage'], $row['postImage2'], $row['postImage3'], $row['postImage4'], $row['postImage5']);
                 foreach($postImages as $image) {
@@ -24,7 +52,7 @@ if ($result->num_rows > 0) {
                 }
                 ?>
             </div>
-            <p class="post-meta">By <?php echo $row['username'] ?> <?php echo formatPostDate($row['created_at']); ?></p>
+            <p class="post-meta">By <?php echo $row['poster_username'] ?> <?php echo formatPostDate($row['created_at']); ?></p>
             <div class="post-buttons">
                 <div class="like-info" id="likeInfo-<?php echo $row['postID']; ?>" style="cursor: pointer;" onclick="showAllLikers(<?php echo $row['postID']; ?>)">
                     <?php
@@ -41,20 +69,17 @@ if ($result->num_rows > 0) {
                         echo 'No likes yet';
                     }
                     ?>
+    
                 </div>
-                <button id="likeButton-<?php echo $row['postID']; ?>" onclick="likePost(<?php echo $row['postID']; ?>)">
-                    <?php
-                    if (checkUserLikedPost($row['postID'], $currentUserID)) {
-                        echo 'Liked';
-                    } else {
-                        echo 'Like';
-                    }
-                    ?>
+                <br> <br>
+                <button class="btn <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? 'liked' : ''; ?>" id="likeButton-<?php echo $row['postID']; ?>" onclick="likePost(<?php echo $row['postID']; ?>)">
+    <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? 'Dislike' : 'Like'; ?>
+</button>
+
                 </button>
-                <!-- Comment button -->
-                <button onclick="window.location.href='post_details.php?id=<?php echo $row['postID']; ?>'">Comment</button>
-                <!-- Reshare button -->
-                <button onclick="resharePost(<?php echo $row['postID']; ?>)">Reshare</button>
+           
+                <button class="btn" onclick="window.location.href='post_details.php?id=<?php echo $row['postID']; ?>'">Comment</button>
+                <button class="btn" onclick="resharePost(<?php echo $row['postID']; ?>)">Share</button>
             </div>
         </div>
         <?php
@@ -139,6 +164,29 @@ if ($result->num_rows > 0) {
             return date("F j, Y", $postTime);
         }
     }
+
+    function formatSharedDate($sharedDate) {
+        date_default_timezone_set('Asia/Manila');
+
+        $currentsTime = time();
+        $sharedTime = strtotime($sharedDate);
+        $timeDiff = $currentsTime - $sharedTime;
+        
+        if ($timeDiff < 60) {
+            return "a few seconds ago";
+        } elseif ($timeDiff < 3600) {
+            $minutes = floor($timeDiff / 60);
+            return "$minutes minute" . ($minutes > 1 ? "s" : "") . " ago";
+        } elseif ($timeDiff < 86400) {
+            $hours = floor($timeDiff / 3600);
+            return "$hours hour" . ($hours > 1 ? "s" : "") . " ago";
+        } elseif ($timeDiff < 604800) {
+            $days = floor($timeDiff / 86400);
+            return "$days day" . ($days > 1 ? "s" : "") . " ago";
+        } else {
+            return date("F j, Y", $sharedTime);
+        }
+    }
 ?>
 
 <script>
@@ -172,10 +220,30 @@ if ($result->num_rows > 0) {
     function closeLikersPopup() {
         $('.likers-popup').remove();
     }
-</script>
+
+    function resharePost(postID) {
+    $.ajax({
+        url: 'resharePost.php',
+        method: 'POST',
+        data: { postID: postID },
+        success: function(response) {
+            if (response.trim() === 'Error') {
+                alert('Error resharing post. Please try again.');
+                return;
+            }
+            alert('Post reshared successfully');
+            $('.posts-container').prepend(response);
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            alert('Error resharing post. Please try again.');
+        }
+    });
+}
+
 
 </script>
-
 
 <style>
     .likers-popup {
@@ -209,4 +277,8 @@ if ($result->num_rows > 0) {
         text-decoration: none;
         color: #0056b3;
     }
+    a {
+        text-decoration: none;
+    }
+    
 </style>

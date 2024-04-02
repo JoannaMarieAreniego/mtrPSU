@@ -5,40 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #343a40;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-        }
-
         form {
-            max-width: 600px;
-            margin: 0 auto;
+            max-width: 1000px;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 100px auto 0;
+            position: relative;
+            z-index: 1;
         }
+        footer {
+    background-color: #0927D8;
+    color: #f8f9fa;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+
 
         input[type="text"] {
             width: 100%;
@@ -47,60 +38,26 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        
 
         input[type="submit"] {
-            padding: 10px 20px;
+          
             background-color: #007bff;
             color: #fff;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
             text-align: center;
             font-size: 16px;
-            text-decoration: none;
-            display: inline-block;
             margin-top: 10px;
+            padding: 10px 0;
+            width: 100%; 
+            border-radius: 100px;
         }
 
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
 
-        header {
-            background-color: #343a40;
-            color: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-        }
-
-        footer {
-            background-color: #343a40;
-            color: #f8f9fa;
-            text-align: center;
-            padding: 20px;
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-        }
-
-        footer p {
-            margin: 0;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-        }
 
         textarea {
             width: 100%;
@@ -110,26 +67,32 @@
             border-radius: 5px;
             resize: vertical;
         }
-        .btn.active {
-            background-color: yellow;
-            color: black
-        }
+        .container {
+    max-width: 1550px;
+    margin: 150px auto 0;
+    text-align: center;
+}
 
-        .btn:hover {
-            background-color: #0056b3;
-        }
+
     </style>
 </head>
 <body>
     <header>
-        <h1>PSU</h1>
+    <div class="logo">
+        <img src="images/psuLOGO.png" alt="">
+    </div>
+    <h1>Pangasinan State University</h1>
+    <nav>
         <a href="profile.php" class="btn">Profile</a>
         <a href="3newsfeed.php" class="btn">Newsfeed</a>
         <a href="createPost.php" class="btn active">Create Post</a>
         <a href="logout.php" class="btn">Logout</a>
+    </nav>
     </header>
 
+    <div class="container">
     <h1>Create a Post</h1>
+    </div>
     <form id="postForm" enctype="multipart/form-data">
         <label for="title">TITLE</label>
         <input type="text" id="title" name="title">
@@ -158,8 +121,8 @@
     </form>
 
     <footer>
-        <p>Pangasinan State University lorem epsum</p>
-        <p>&copy; 2023 Jane</p>
+        <p>Pangasinan State University</p>
+        <p>© 2024 PSUnian Space</p>
     </footer>
 
     <script>

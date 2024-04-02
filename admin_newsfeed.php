@@ -1,9 +1,5 @@
 <?php 
    session_start();
-   if (!isset($_SESSION['studID'])) {
-    header("Location: logintry.php");
-    exit;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,34 +11,43 @@
     <title>Newsfeed</title>
 
     <style>
-        
-        body {
+          body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     font-family: "Arial Black", sans-serif;
-    background-color: #f8f9fa; /* Light blue */
+    background-color: #f8f9fa;
     color: #343a40;
     margin: 0;
     padding: 0;
 }
 
-.container {
-    flex: 1; /* Grow to fill remaining space */
-    padding: 20px; /* Adjust padding as needed */
-    min-width: 1200px; /* Limit container width */
-    margin: 0 auto; /* Center the container horizontally */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.container {
+    flex: 1;
+    padding: 20px;
+    min-width: 1200px;
+    margin: 80px auto 20px;
+}
+
 
 footer {
     background-color: #0927D8;
     color: #f8f9fa;
     text-align: center;
     padding: 20px;
-    margin-top: auto; /* Push footer to the bottom */
+    margin-top: auto;
     width: 100%;
 }
-
 
     .post {
         background-color: #fff;
@@ -60,7 +65,9 @@ footer {
         cursor: pointer;
     }
 
-
+    .post h2:hover {
+        text-decoration: underline;
+    }
 
     .post p {
         margin-bottom: 15px;
@@ -71,11 +78,12 @@ footer {
         font-size: 0.8rem;
     }
 
-    .container {
-            max-width: 1100px;
-            margin: 120px auto 20px;
-            padding: 0 20px;
-        }
+    .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+    }
 
     .post-image {
         max-width: 100%;
@@ -84,7 +92,24 @@ footer {
         border-radius: 8px;
     }
 
+    footer {
+        background-color: #343a40;
+        color: #f8f9fa;
+        text-align: center;
+        padding: 20px;
+        margin-top: 20px;
+    }
 
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
 
     .post-buttons {
         top: 10px;
@@ -103,31 +128,44 @@ footer {
 
     @media only screen and (max-width: 600px) {
         .container {
-                padding: 0 10px;
-            }
-            
+            padding: 0 10px;
         }
-        
+    }
+    .btn.active {
+        background-color: yellow;
+        color: black
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    footer {
+    background-color: #0927D8;
+    color: #f8f9fa;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
 </style>
 </head>
 <body>
 
-<header>
+    <header>
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
     <h1>Pangasinan State University</h1>
     <nav>
-        <a href="profile.php" class="btn">Profile</a>
-        <a href="3newsfeed.php" class="btn active">Newsfeed</a>
-        <a href="createPost.php" class="btn">Create Post</a>
+        <a href="admin_newsfeed.php" class="btn active">Newsfeed</a>
+        <a href="manageAccount.php" class="btn">Manage Accounts</a>
         <a href="logout.php" class="btn">Logout</a>
-    </nav>
-</header>
-        
+</nav>
+    </header>
 
     <div class="container" id="postsContainer">
-        
     </div>
 
     <footer>
@@ -143,56 +181,13 @@ footer {
 
         function loadPosts() {
             $.ajax({
-                url: 'loadPosts.php',
+                url: 'admin_loadPost.php',
                 method: 'GET',
                 success: function(response) {
                     $('#postsContainer').html(response);
                 }
             });
         }
-
-    function likePost(postID) {
-        var likeButton = $('#likeButton-' + postID);
-        var isLiked = likeButton.hasClass('liked');
-
-        $.ajax({
-            url: 'addLike.php',
-            method: 'POST',
-            data: { postID: postID, isLiked: isLiked ? 0 : 1 },
-            success: function(response) {
-                console.log(response);
-                if (isLiked) {
-                    likeButton.removeClass('liked').text('Like');
-                } else {
-                    likeButton.addClass('liked').text('Liked');
-                }
-                updateLikeInfo(postID);
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    }
-
-        function updateLikeInfo(postID) {
-            $.ajax({
-                url: 'updateLike.php',
-                method: 'POST',
-                data: { postID: postID },
-                dataType: 'json',
-                success: function(response) {
-                    var likeCount = response.likeCount;
-                    var likedUsers = response.likedUsers.join(', ');
-                    var likeInfoElement = $('#likeInfo-' + postID);
-                    likeInfoElement.html('Liked by ' + likedUsers);
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        }
-        
-
     </script>
 </body>
 </html>

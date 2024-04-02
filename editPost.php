@@ -31,30 +31,11 @@ if(isset($_GET['post_id'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Profile</title>
 
     <style>
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #343a40;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: #343a40;
-            color: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-        }
+        
 
 .container {
     max-width: 1200px;
@@ -86,36 +67,28 @@ if(isset($_GET['post_id'])){
             font-size: 0.8rem;
         }
 
-        footer {
-            background-color: #343a40;
-            color: #f8f9fa;
-            text-align: center;
+        form {
+            max-width: 1000px;
             padding: 20px;
-            margin-top: auto;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
-        .btn-delete {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 100px auto 0;
+            position: relative;
             z-index: 1;
         }
+        footer {
+    background-color: #0927D8;
+    color: #f8f9fa;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
 
-        .btn-edit {
-            position: absolute;
-            top: 10px;
-            right: 100px;
-        }
         input[type="text"],
     textarea {
     width: 100%;
@@ -130,9 +103,8 @@ if(isset($_GET['post_id'])){
 }
 
     button[type="submit"][name="update"] {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #FFDA27;
+    color: black;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -141,6 +113,10 @@ if(isset($_GET['post_id'])){
     text-decoration: none;
     display: inline-block;
     margin-top: 10px;
+    padding: 10px 0;
+            width: 100%; 
+            border-radius: 100px;
+            font-family: "Arial Black", sans-serif;
         }
 
         button[type="submit"][name="update"]:hover {
@@ -157,9 +133,15 @@ if(isset($_GET['post_id'])){
 <body>
 
 <header>
-    <h1>PSU</h1>
+<div class="logo">
+        <img src="images/psuLOGO.png" alt="">
+    </div>
+    <h1>Pangasinan State University</h1>
+    <nav>
+    <a href="profile.php" class="btn active">Profile</a>
     <a href="3newsfeed.php" class="btn">Newsfeed</a>
     <a href="createPost.php" class="btn">Create Post</a>
+    <a href="logout.php" class="btn">Logout</a>
 </header>
 
 <div class="container">
@@ -204,8 +186,8 @@ if(isset($_GET['post_id'])){
 </div>
 
 <footer>
-    <p>Pangasinan State University lorem epsum</p>
-    <p>&copy; 2023 Jane</p>
+        <p>Pangasinan State University</p>
+        <p>© 2024 PSUnian Space</p>
 </footer>
 
 </body>

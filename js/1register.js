@@ -78,6 +78,8 @@ function addUser() {
                 console.log("User added successfully!");
                 $('#studID, #username, #password, #confirmpass').val('');
                 alert("User added successfully!");
+                window.location.href = "logintry.php";
+
             } else {
                 console.error("Error adding user:", response.message);
                 alert(response.message);

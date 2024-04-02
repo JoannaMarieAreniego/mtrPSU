@@ -37,15 +37,15 @@ function loginUser() {
         success: function (response) {
             response = JSON.parse(response);
             if (response.status === "success") {
-                window.location.href = "3newsfeed.php";
+                if (response.type === "admin") {
+                    window.location.href = "admin_newsfeed.php";
+                } else {
+                    window.location.href = "3newsfeed.php";
+                }
             } else {
                 alert("Login failed. Please check your credentials.");
             }
         },
-        error: function () {
-            console.error("Something went wrong with the AJAX request.");
-            alert("Something went wrong with the AJAX request.");
-        }
     });
     return false;
 }

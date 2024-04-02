@@ -57,7 +57,6 @@ if(isset($_POST['postID']) && isset($_POST['isLiked'])) {
     }
 }
 
-// Handle comment submission
 if(isset($_POST['comment'])) {
     $comment = mysqli_real_escape_string($conn, $_POST['comment']);
     $studID = $_SESSION['studID'];
@@ -72,7 +71,6 @@ if(isset($_POST['comment'])) {
     }
 }
 
-// Handle comment deletion
 if(isset($_POST['delete_comment'])) {
     $commentID = $_POST['delete_comment'];
 
@@ -95,111 +93,123 @@ if(isset($_POST['delete_comment'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Post Details</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #343a40;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
+.container {
+        max-width: 1200px;
+        margin: 80px auto 20px;
+        padding: 20px;
+      
+    }
+    .con {
+        margin: 10px auto 10px;
+        padding: 40px;
+    border: 1px solid #007bff;
+}
 
-        header {
-            background-color: #343a40;
-            color: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
 
-        .container {
-            max-width: 1200px;
+    .post {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+    }
+
+    .post h2 {
+        margin-bottom: 10px;
+        color: #007bff;
+        cursor: pointer;
+    }
+
+
+
+    .post p {
+        margin-bottom: 15px;
+    }
+
+    .post-meta {
+        color: #6c757d;
+        font-size: 0.8rem;
+    }
+
+    .container {
+            max-width: 1100px;
             margin: 120px auto 20px;
             padding: 0 20px;
         }
 
-        .post {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
+    .post-image {
+        max-width: 100%;
+        height: 200px;
+        object-fit: cover; 
+        border-radius: 8px;
+    }
 
-        .post h2 {
-            margin-bottom: 10px;
-            color: #007bff;
-        }
 
-        .post p {
-            margin-bottom: 15px;
-        }
 
-        .post-meta {
-            color: #6c757d;
-            font-size: 0.8rem;
-        }
+    .post-buttons {
+        top: 10px;
+        right: 10px;
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
+    .post-buttons button {
+        margin-left: 5px;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+    }
+    .btns {
+padding: 10px 20px;
+background-color: #FFDA27;
+color: black;
+text-decoration: none;
+border-radius: 50px;
+margin-right: 10px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+  font-family: "Arial Black", sans-serif;
+}
 
-        .image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+button:hover {
+    background-color: #0056b3;
+}
 
-        .post-image {
-            max-width: 100%;
-            height: 200px;
-            object-fit: cover; 
-        }
+form {
+    margin-top: 20px;
+}
 
-        footer {
-            background-color: #343a40;
-            color: #f8f9fa;
-            text-align: center;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        .btn.active {
-            background-color: yellow;
-            color: black
-        }
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+}
 
-        .btn:hover {
-            background-color: #0056b3;
-        }
+
     </style>
 </head>
 <body>
     <header>
-        <h1>PSU</h1>
+    <div class="logo">
+        <img src="images/psuLOGO.png" alt="">
+    </div>
+    <h1>Pangasinan State University</h1>
+    <nav>
         <a href="profile.php" class="btn">Profile</a>
         <a href="3newsfeed.php" class="btn active">Newsfeed</a>
         <a href="createPost.php" class="btn">Create Post</a>
         <a href="logout.php" class="btn">Logout</a>
+    </nav>
     </header>
 
     <div class="container">
@@ -215,25 +225,23 @@ if(isset($_POST['delete_comment'])) {
                         }
                     }
                 ?>
-            </div>
+         
             <p class="post-meta">By <?php echo $row['username'] ?> <?php echo formatPostDate($row['created_at']); ?></p>
-            <button id="likeButton-<?php echo $row['postID']; ?>" onclick="likePost(<?php echo $row['postID']; ?>)">
+            <button class="btn" id="likeButton-<?php echo $row['postID']; ?>" onclick="likePost(<?php echo $row['postID']; ?>)">
                 <?php
                     if (checkUserLikedPost($row['postID'], $currentUserID)) {
-                        echo 'Liked';
+                        echo 'Dislike';
                     } else {
                         echo 'Like';
                     }
                 ?>
             </button>
-            <!-- Comment button -->
-            <button onclick="window.location.href='post_details.php?id=<?php echo $row['postID']; ?>'">Comment</button>
             <!-- Reshare button -->
-            <button onclick="resharePost(<?php echo $row['postID']; ?>)">Reshare</button>
+            <button  class="btn" onclick="resharePost(<?php echo $row['postID']; ?>)">Share</button>
         </div>
 
         <!-- Comments section -->
-        <h2>Comments</h2>
+        <div class="con">
         <?php
         // DISPLAY COMMENT
         $commentsQuery = "SELECT comments.*, users.username FROM comments INNER JOIN users ON comments.studID = users.studID WHERE postID = ?";
@@ -244,30 +252,40 @@ if(isset($_POST['delete_comment'])) {
 
         if ($result->num_rows > 0) {
             while ($comment = $result->fetch_assoc()) {
-                echo "<p>{$comment['username']}: {$comment['comment']}</p>";
+                ?>
+                  <div class="con">
+                    <?php
+                echo "<p>{$comment['username']} commented: <br> {$comment['comment']}</p>";
                 //DELETE COMMENT
                 if ($comment['studID'] == $currentUserID) {
                     echo "<form action='' method='post'>";
                     echo "<input type='hidden' name='delete_comment' value='{$comment['commentID']}'>";
-                    echo "<button type='submit'>Delete</button>";
+                    echo "<button class='btnd' type='submit'>Delete Comment</button>";
                     echo "</form>";
                 }
+                ?>
+                </div>
+                <?php
             }
         } else {
             echo "No comments yet.";
         }
         ?>
 
+<div class="con">
         <!-- Comment form -->
         <h3>Add Comment</h3>
         <form action="post_details.php?id=<?php echo $postID; ?>" method="post">
             <textarea name="comment" rows="4" cols="50"></textarea><br>
-            <button type="submit">Submit Comment</button>
+            <button type="submit" class="btns">Submit Comment</button>
         </form>
     </div>
+    </div>
+    </div>
+    </div>
     <footer>
-        <p>Pangasinan State University lorem epsum</p>
-        <p>&copy; 2023 Jane</p>
+        <p>Pangasinan State University</p>
+        <p>© 2024 PSUnian Space</p>
     </footer>
 
     <script>
