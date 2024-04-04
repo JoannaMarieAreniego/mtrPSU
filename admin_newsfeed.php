@@ -41,13 +41,35 @@ header {
 
 
 footer {
-    background-color: #0927D8;
-    color: #f8f9fa;
-    text-align: center;
-    padding: 20px;
-    margin-top: auto;
-    width: 100%;
-}
+            background-color: #0927D8;
+            color: #f8f9fa;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .names {
+            text-align: center;
+        }
+
+        .left-content {
+            flex: 1;
+            text-align: left; /* Align content to the left */
+        }
+
+        .right-content {
+            text-align: right; /* Align content to the right */
+        }
+
+        .left-content p,
+        .right-content p {
+            margin: 0;
+        }
 
     .post {
         background-color: #fff;
@@ -169,8 +191,23 @@ footer {
     </div>
 
     <footer>
-        <p>Pangasinan State University</p>
-        <p>© 2024 PSUnian Space</p>
+        <div class="footer-content">
+            <div class="left-content">
+                <p>Pangasinan State University</p>
+            </div>
+            <div class="right-content">
+                <p id="copyright"></p>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var currentYear = new Date().getFullYear();
+                        document.getElementById('copyright').innerText = '© ' + currentYear + ' PSUnian Space';
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="names">
+            <p>Janela Tamayo and Joanna Marie Areniego</p>
+        </div>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js?ver=002"></script>

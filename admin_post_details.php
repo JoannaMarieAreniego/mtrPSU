@@ -104,16 +104,35 @@ body {
         }
 
         footer {
-    background-color: #0927D8;
-    color: #f8f9fa;
-    text-align: center;
-    padding: 20px;
-    margin-top: 20px;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-}
+            background-color: #0927D8;
+            color: #f8f9fa;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .names {
+            text-align: center;
+        }
+
+        .left-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .right-content {
+            text-align: right;
+        }
+
+        .left-content p,
+        .right-content p {
+            margin: 0;
+        }
 
         .btn.active {
             background-color: yellow;
@@ -169,13 +188,28 @@ body {
                 <input type="hidden" name="delete_post" value="<?php echo $row['postID']; ?>">
                 <button class="btnd" type="submit" class="btn">Delete Post</button>
             </form>
-
-    <?php } ?>
+            <?php } ?>
         </div>
-            </div>
+    </div>
+    
     <footer>
-        <p>Pangasinan State University</p>
-        <p>© 2024 PSUnian Space</p>
+        <div class="footer-content">
+            <div class="left-content">
+                <p>Pangasinan State University</p>
+            </div>
+            <div class="right-content">
+                <p id="copyright"></p>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var currentYear = new Date().getFullYear();
+                        document.getElementById('copyright').innerText = '© ' + currentYear + ' PSUnian Space';
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="names">
+            <p>Janela Tamayo and Joanna Marie Areniego</p>
+        </div>
     </footer>
 </body>
 </html>
@@ -183,7 +217,7 @@ body {
 <?php
     function formatPostDate($postDate) {
         date_default_timezone_set('Asia/Manila');
-
+    
         $currentTime = time();
         $postTime = strtotime($postDate);
         $timeDiff = $currentTime - $postTime;
@@ -200,7 +234,18 @@ body {
             $days = floor($timeDiff / 86400);
             return "$days day" . ($days > 1 ? "s" : "") . " ago";
         } else {
-            return date("F j, Y", $postTime);
+            $weeks = floor($timeDiff / 604800);
+            if ($weeks < 4) {
+                return "$weeks week" . ($weeks > 1 ? "s" : "") . " ago";
+            } else {
+                $months = floor($weeks / 4);
+                if ($months < 12) {
+                    return "$months month" . ($months > 1 ? "s" : "") . " ago";
+                } else {
+                    $years = floor($months / 12);
+                    return "$years year" . ($years > 1 ? "s" : "") . " ago";
+                }
+            }
         }
     }
 ?>

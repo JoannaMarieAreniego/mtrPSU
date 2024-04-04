@@ -78,16 +78,35 @@ if(isset($_GET['post_id'])){
             z-index: 1;
         }
         footer {
-    background-color: #0927D8;
-    color: #f8f9fa;
-    text-align: center;
-    padding: 20px;
-    margin-top: 20px;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-}
+            background-color: #0927D8;
+            color: #f8f9fa;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .names {
+            text-align: center;
+        }
+
+        .left-content {
+            flex: 1;
+            text-align: left; /* Align content to the left */
+        }
+
+        .right-content {
+            text-align: right; /* Align content to the right */
+        }
+
+        .left-content p,
+        .right-content p {
+            margin: 0;
+        }
 
         input[type="text"],
     textarea {
@@ -141,6 +160,7 @@ if(isset($_GET['post_id'])){
     <a href="profile.php" class="btn active">Profile</a>
     <a href="3newsfeed.php" class="btn">Newsfeed</a>
     <a href="createPost.php" class="btn">Create Post</a>
+    <a href="faq.php" class="btn">FAQs</a>
     <a href="logout.php" class="btn">Logout</a>
 </header>
 
@@ -185,10 +205,26 @@ if(isset($_GET['post_id'])){
     <?php endif; ?>
 </div>
 
-<footer>
-        <p>Pangasinan State University</p>
-        <p>© 2024 PSUnian Space</p>
-</footer>
+    <footer>
+        <div class="footer-content">
+            <div class="left-content">
+                <p>Pangasinan State University</p>
+            </div>
+            <div class="right-content">
+                <p id="copyright"></p>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var currentYear = new Date().getFullYear();
+                        document.getElementById('copyright').innerText = '© ' + currentYear + ' PSUnian Space';
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="names">
+            <p>Janela Tamayo and Joanna Marie Areniego</p>
+        </div>
+    </footer>
+
 
 </body>
 </html>

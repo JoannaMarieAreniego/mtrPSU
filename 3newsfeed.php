@@ -17,31 +17,54 @@
     <style>
         
         body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    font-family: "Arial Black", sans-serif;
-    background-color: #f8f9fa; /* Light blue */
-    color: #343a40;
-    margin: 0;
-    padding: 0;
-}
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: "Arial Black", sans-serif;
+            background-color: #f8f9fa; /* Light blue */
+            color: #343a40;
+            margin: 0;
+            padding: 0;
+        }
 
-.container {
-    flex: 1; /* Grow to fill remaining space */
-    padding: 20px; /* Adjust padding as needed */
-    min-width: 1200px; /* Limit container width */
-    margin: 0 auto; /* Center the container horizontally */
-}
+        .container {
+            flex: 1; /* Grow to fill remaining space */
+            padding: 20px; /* Adjust padding as needed */
+            min-width: 1200px; /* Limit container width */
+            margin: 0 auto; /* Center the container horizontally */
+        }
 
-footer {
-    background-color: #0927D8;
-    color: #f8f9fa;
-    text-align: center;
-    padding: 20px;
-    margin-top: auto; /* Push footer to the bottom */
-    width: 100%;
-}
+        footer {
+            background-color: #0927D8;
+            color: #f8f9fa;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .names {
+            text-align: center;
+        }
+
+        .left-content {
+            flex: 1;
+            text-align: left; /* Align content to the left */
+        }
+
+        .right-content {
+            text-align: right; /* Align content to the right */
+        }
+
+        .left-content p,
+        .right-content p {
+            margin: 0;
+        }
+
 
 
     .post {
@@ -121,6 +144,7 @@ footer {
         <a href="profile.php" class="btn">Profile</a>
         <a href="3newsfeed.php" class="btn active">Newsfeed</a>
         <a href="createPost.php" class="btn">Create Post</a>
+        <a href="faq.php" class="btn">FAQs</a>
         <a href="logout.php" class="btn">Logout</a>
     </nav>
 </header>
@@ -129,12 +153,25 @@ footer {
     <div class="container" id="postsContainer">
         
     </div>
-
     <footer>
-        <p>Pangasinan State University</p>
-        <p>© 2024 PSUnian Space</p>
+        <div class="footer-content">
+            <div class="left-content">
+                <p>Pangasinan State University</p>
+            </div>
+            <div class="right-content">
+                <p id="copyright"></p>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var currentYear = new Date().getFullYear();
+                        document.getElementById('copyright').innerText = '© ' + currentYear + ' PSUnian Space';
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="names">
+            <p>Janela Tamayo and Joanna Marie Areniego</p>
+        </div>
     </footer>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js?ver=002"></script>
     <script>
         $(document).ready(function() {

@@ -44,13 +44,35 @@ $result = $conn->query($sql);
 }
 
 footer {
-    background-color: #0927D8;
-    color: #f8f9fa;
-    text-align: center;
-    padding: 20px;
-    margin-top: auto;
-    width: 100%;
-}
+            background-color: #0927D8;
+            color: #f8f9fa;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .names {
+            text-align: center;
+        }
+
+        .left-content {
+            flex: 1;
+            text-align: left; /* Align content to the left */
+        }
+
+        .right-content {
+            text-align: right; /* Align content to the right */
+        }
+
+        .left-content p,
+        .right-content p {
+            margin: 0;
+        }
 
 
         .container {
@@ -124,6 +146,7 @@ footer {
         <a href="profile.php" class="btn active">Profile</a>
         <a href="3newsfeed.php" class="btn">Newsfeed</a>
         <a href="createPost.php" class="btn">Create Post</a>
+        <a href="faq.php" class="btn">FAQs</a>
         <a href="logout.php" class="btn">Logout</a>
     </nav>
 </header>
@@ -214,10 +237,25 @@ $result_shared = $conn->query($sql_shared);
     ?>
 </div>
 
-<footer>
-        <p>Pangasinan State University</p>
-        <p>© 2024 PSUnian Space</p>
-</footer>
+    <footer>
+        <div class="footer-content">
+            <div class="left-content">
+                <p>Pangasinan State University</p>
+            </div>
+            <div class="right-content">
+                <p id="copyright"></p>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var currentYear = new Date().getFullYear();
+                        document.getElementById('copyright').innerText = '© ' + currentYear + ' PSUnian Space';
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="names">
+            <p>Janela Tamayo and Joanna Marie Areniego</p>
+        </div>
+    </footer>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -259,7 +297,7 @@ function deleteSharedPost(postId) {
 <?php
     function formatPostDate($postDate) {
         date_default_timezone_set('Asia/Manila');
-
+    
         $currentTime = time();
         $postTime = strtotime($postDate);
         $timeDiff = $currentTime - $postTime;
@@ -276,7 +314,18 @@ function deleteSharedPost(postId) {
             $days = floor($timeDiff / 86400);
             return "$days day" . ($days > 1 ? "s" : "") . " ago";
         } else {
-            return date("F j, Y", $postTime);
+            $weeks = floor($timeDiff / 604800);
+            if ($weeks < 4) {
+                return "$weeks week" . ($weeks > 1 ? "s" : "") . " ago";
+            } else {
+                $months = floor($weeks / 4);
+                if ($months < 12) {
+                    return "$months month" . ($months > 1 ? "s" : "") . " ago";
+                } else {
+                    $years = floor($months / 12);
+                    return "$years year" . ($years > 1 ? "s" : "") . " ago";
+                }
+            }
         }
     }
 ?>

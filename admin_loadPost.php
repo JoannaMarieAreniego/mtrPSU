@@ -36,7 +36,7 @@ if ($result->num_rows > 0) {
 <?php
     function formatPostDate($postDate) {
         date_default_timezone_set('Asia/Manila');
-
+    
         $currentTime = time();
         $postTime = strtotime($postDate);
         $timeDiff = $currentTime - $postTime;
@@ -53,7 +53,18 @@ if ($result->num_rows > 0) {
             $days = floor($timeDiff / 86400);
             return "$days day" . ($days > 1 ? "s" : "") . " ago";
         } else {
-            return date("F j, Y", $postTime);
+            $weeks = floor($timeDiff / 604800);
+            if ($weeks < 4) {
+                return "$weeks week" . ($weeks > 1 ? "s" : "") . " ago";
+            } else {
+                $months = floor($weeks / 4);
+                if ($months < 12) {
+                    return "$months month" . ($months > 1 ? "s" : "") . " ago";
+                } else {
+                    $years = floor($months / 12);
+                    return "$years year" . ($years > 1 ? "s" : "") . " ago";
+                }
+            }
         }
     }
 ?>
