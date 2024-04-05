@@ -7,6 +7,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <style>
+        
         form {
             max-width: 1000px;
             padding: 20px;
@@ -91,6 +92,10 @@
     margin: 150px auto 0;
     text-align: center;
 }
+.ck-editor__editable[role="textbox"] {
+                /* Editing area */
+                min-height: 350px;
+            }
 
 
     </style>
@@ -202,3 +207,12 @@
 
 </body>
 </html>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create( document.querySelector( '#content' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
+

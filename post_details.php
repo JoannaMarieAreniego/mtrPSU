@@ -230,7 +230,6 @@ border-radius: 50px;
 margin-right: 10px;
 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
-  font-family: "Arial Black", sans-serif;
 }
 
 button:hover {

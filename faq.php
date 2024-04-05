@@ -19,7 +19,6 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      font-family: "Arial Black", sans-serif;
       background-color: #f8f9fa;
       color: #343a40;
       margin: 0;

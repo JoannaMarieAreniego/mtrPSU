@@ -135,7 +135,6 @@ if(isset($_GET['post_id'])){
     padding: 10px 0;
             width: 100%; 
             border-radius: 100px;
-            font-family: "Arial Black", sans-serif;
         }
 
         button[type="submit"][name="update"]:hover {

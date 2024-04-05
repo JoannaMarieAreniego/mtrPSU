@@ -104,7 +104,6 @@ if(isset($_POST['delete_comment'])) {
         }
 
         body {
-            font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             color: #343a40;
             margin: 0;

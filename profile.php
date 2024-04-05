@@ -27,7 +27,6 @@ $result = $conn->query($sql);
 
     <style>    
    body {
-    font-family: "Arial Black", sans-serif;
     background-color: #f8f9fa;
     color: #343a40;
     margin: 0;
@@ -105,7 +104,7 @@ footer {
             font-size: 0.8rem;
         }
       .btn-delete {
-            font-family: "Arial Black", sans-serif;
+     
             font-size: 14px;
             position: absolute;
             top: 10px;

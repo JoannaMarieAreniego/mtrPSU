@@ -20,7 +20,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            font-family: "Arial Black", sans-serif;
             background-color: #f8f9fa; /* Light blue */
             color: #343a40;
             margin: 0;
@@ -169,7 +168,7 @@
             </div>
         </div>
         <div class="names">
-            <p>Janela Tamayo and Joanna Marie Areniego</p>
+            <!-- <p>Janela Tamayo and Joanna Marie Areniego</p> -->
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js?ver=002"></script>

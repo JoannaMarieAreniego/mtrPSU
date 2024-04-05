@@ -4,8 +4,7 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: "Arial Black", sans-serif;
+body { 
     background-color: #f8f9fa;
     color: #343a40;
     margin: 0;
@@ -14,19 +13,6 @@ body {
     
 }
 
-header {
-background-color: #0927D8;
-color: #f8f9fa;
-padding: 20px;
-text-align: center;
-position: fixed;
-top: 0;
-width: 100%;
-z-index: 1000;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
 
 header h1 {
 font-family: "Old English Text MT", serif;
@@ -90,7 +76,6 @@ text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     margin-right: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    font-family: "Arial Black", sans-serif;
 }
 
 

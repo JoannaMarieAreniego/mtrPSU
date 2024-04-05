@@ -217,8 +217,8 @@
         <div class="form">
             <h2>Login Here</h2>
             <form id="loginForm" onsubmit="return loginUser();">
-            <h4>Username</h4>
-                <input type="text" id="studID" name="studID" placeholder="Enter Username Here" required>
+            <h4>Student ID</h4>
+                <input type="text" id="studID" name="studID" placeholder="Enter Student ID Here" required>
             <h4>Password</h4>
                 <input type="password" id="password" name="password" placeholder="Enter Password Here" required>
                 <button type="submit" name="loginButton" class="btn">Login</button>
