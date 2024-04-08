@@ -79,7 +79,7 @@
         cursor: pointer; 
         background-color: #ffffff;
         padding: 10px 15px;
-        margin-bottom: 5px;
+        margin-bottom: 15px;
         border-radius: 5px;
         transition: background-color 0.3s;
     }
@@ -94,6 +94,7 @@
         padding: 10px; 
         background-color: #f8f8f8;
         border-radius: 5px;
+        padding: 20px;
     }
   </style>
 </head>
@@ -102,8 +103,9 @@
 <header>
   <div class="logo">
     <img src="images/psuLOGO.png" alt="">
+    
   </div>
-  <h1>Pangasinan State University</h1>
+  <h1>PSUnian Space</h1>
   <nav>
     <a href="profile.php" class="btn">Profile</a>
     <a href="3newsfeed.php" class="btn">Newsfeed</a>

@@ -22,7 +22,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css?version=001">
     <title>Profile</title>
 
     <style>    
@@ -140,7 +140,7 @@ footer {
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
-    <h1>Pangasinan State University</h1>
+    <h1>PSUnian Space</h1>
     <nav>
         <a href="profile.php" class="btn active">Profile</a>
         <a href="3newsfeed.php" class="btn">Newsfeed</a>

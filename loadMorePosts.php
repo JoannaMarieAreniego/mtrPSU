@@ -1,41 +1,30 @@
-<!-- loadPosts.php -->
-<style>
-.post-buttons .btn  {
-display: inline-block;
-padding: 10px 20px;
-background-color: #007bff;
-color: white;
-text-decoration: none;
-border-radius: 50px;
-margin-right: 10px;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
-}
-.post-buttons .btn.liked {
-    background-color: yellow;
-    color: #333;
-}
-
-</style>
+<!-- loadMorePosts.php -->
 <?php
 include("0conn.php");
 session_start();
 
 $currentUserID = $_SESSION['studID'];
 
-$sql = "SELECT posts.*, users.username AS poster_username, shared_posts.shared_by_studID, shared_posts.shared_from_studID, shared_posts.shared_at, sharer.username AS shared_by_username
-FROM posts
-LEFT JOIN users ON posts.studID = users.studID
-LEFT JOIN shared_posts ON posts.postID = shared_posts.postID
-LEFT JOIN users AS sharer ON shared_posts.shared_by_studID = sharer.studID
-ORDER BY COALESCE(shared_posts.shared_at, posts.created_at) DESC
-LIMIT 10"; // Limiting to 10 posts
-$result = $conn->query($sql);
+if (isset($_GET['lastPostID'])) {
+    $lastPostID = $_GET['lastPostID'];
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        ?>
-        <div class="post" data-post-id="<?php echo $row['postID']; ?>">
+    $sql = "SELECT posts.*, users.username AS poster_username, shared_posts.shared_by_studID, shared_posts.shared_from_studID, shared_posts.shared_at, sharer.username AS shared_by_username
+            FROM posts
+            LEFT JOIN users ON posts.studID = users.studID
+            LEFT JOIN shared_posts ON posts.postID = shared_posts.postID
+            LEFT JOIN users AS sharer ON shared_posts.shared_by_studID = sharer.studID
+            WHERE posts.postID < ?
+            ORDER BY COALESCE(shared_posts.shared_at, posts.created_at) DESC
+            LIMIT 10";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $lastPostID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            ?>
+            <div class="post" data-post-id="<?php echo $row['postID']; ?>">
             <h2><a href="#?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
             <?php if (!empty($row['shared_by_studID'])): ?>
                 <p><em>Shared by <?php echo $row['shared_by_username']; ?>  <?php echo formatSharedDate($row['shared_at']); ?></em></p>
@@ -72,21 +61,26 @@ if ($result->num_rows > 0) {
                 </div>
                 <br> <br>
                 <button class="btn <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? 'liked' : ''; ?>" id="likeButton-<?php echo $row['postID']; ?>" onclick="likePost(<?php echo $row['postID']; ?>)">
-    <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? 'Dislike' : 'Like'; ?>
-</button>
-
+                    <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? 'Dislike' : 'Like'; ?>
                 </button>
-           
                 <button class="btn" onclick="window.location.href='post_details.php?id=<?php echo $row['postID']; ?>'">Comment</button>
                 <button class="btn" onclick="resharePost(<?php echo $row['postID']; ?>)">Share</button>
             </div>
-        </div>
-        <?php
+            </div>
+            <?php
+        }
+    } else {
+        echo "No more posts found.";
     }
+
+    $stmt->close();
 } else {
-    echo "No posts found.";
+    echo "Error: lastPostID parameter is not set.";
 }
+
+$conn->close();
 ?>
+
 
 <?php
     function getLikedUsers($postId) {
@@ -303,3 +297,5 @@ if ($result->num_rows > 0) {
     }
     
 </style>
+
+

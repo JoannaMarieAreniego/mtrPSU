@@ -1,3 +1,4 @@
+<!-- 3newsfeed.php -->
 <?php 
    session_start();
    if (!isset($_SESSION['studID'])) {
@@ -29,7 +30,7 @@
         .container {
             flex: 1; /* Grow to fill remaining space */
             padding: 20px; /* Adjust padding as needed */
-            min-width: 1200px; /* Limit container width */
+            min-width: 500px; /* Limit container width */
             margin: 0 auto; /* Center the container horizontally */
         }
 
@@ -72,7 +73,7 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
         padding: 20px;
-        text-align: center;
+        text-align: left;
         position: relative;
     }
 
@@ -101,7 +102,7 @@
 
     .post-image {
         max-width: 100%;
-        height: 200px;
+        height: 100px;
         object-fit: cover; 
         border-radius: 8px;
     }
@@ -138,7 +139,7 @@
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
-    <h1>Pangasinan State University</h1>
+    <h1>PSUnian Space</h1>
     <nav>
         <a href="profile.php" class="btn">Profile</a>
         <a href="3newsfeed.php" class="btn active">Newsfeed</a>
@@ -168,13 +169,27 @@
             </div>
         </div>
         <div class="names">
-            <!-- <p>Janela Tamayo and Joanna Marie Areniego</p> -->
+            <p>Janela Tamayo and Joanna Marie Areniego</p>
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js?ver=002"></script>
     <script>
         $(document).ready(function() {
-            loadPosts();
+            var loading = false;
+            loadPosts(); 
+            $(window).scroll(function() {
+                if ($('#postsContainer').length && !loading) {
+                    var scrollTop = $(window).scrollTop();
+                    var windowHeight = $(window).height();
+                    var containerHeight = $('#postsContainer').outerHeight();
+                    var containerOffset = $('#postsContainer').offset().top;
+                    var bottomOffset = containerOffset + containerHeight - windowHeight;
+                    if (scrollTop >= bottomOffset && scrollTop <= bottomOffset + 5000) {
+                        loading = true;
+                        loadMorePosts();
+                    }
+                }
+            });
         });
 
         function loadPosts() {
@@ -183,6 +198,22 @@
                 method: 'GET',
                 success: function(response) {
                     $('#postsContainer').html(response);
+                }
+            });
+        }
+
+        function loadMorePosts() {
+            var lastPostID = $('.post:last').data('post-id');
+            console.log("Last Post ID:", lastPostID);
+            $.ajax({
+                url: 'loadMorePosts.php',
+                method: 'GET',
+                data: { lastPostID: lastPostID },
+                success: function(response) {
+                    if (response.trim() !== 'No more posts found.') {
+                        $('#postsContainer').append(response);
+                    }
+                    loading = false;
                 }
             });
         }
@@ -227,8 +258,6 @@
                 }
             });
         }
-        
-
     </script>
 </body>
 </html>

@@ -5,12 +5,115 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- <link rel="stylesheet" type="text/css" href="style.css?version=001"> -->
     <style>
+
+* {
+    margin: 0;
+
+    box-sizing: border-box;
+}
+
+body { 
+    background-color: #f8f9fa;
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    
+}
+
+header {
+background-color: #0927D8;
+color: #f8f9fa;
+padding: 20px;
+text-align: center;
+position: fixed;
+top: 0;
+width: 100%;
+z-index: 1000;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+header h1 {
+font-family: "Old English Text MT", serif;
+font-size: 45px; 
+color: #fff; 
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+margin-bottom: 10px;
+}
+
+
+
+.logo {
+margin-right: auto;
+}
+
+.logo img {
+height: 75px;
+width: auto;
+border-radius: 50%; 
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+transition: transform 0.3s ease; 
+}
+
+.logo img:hover {
+transform: scale(1.1); 
+}
+nav {
+margin-left: auto; 
+}
+.btn {
+display: inline-block;
+padding: 10px 20px;
+background-color: #007bff;
+color: white;
+text-decoration: none;
+border-radius: 50px;
+margin-right: 10px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+}
+.btnd {
+    padding: 10px 20px;
+    background-color: #7D0A0A;
+    color: white;
+    border-radius: 50px;
+    margin-right: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+nav {
+margin-left: auto;
+display: flex;
+justify-content: flex-end;
+}
+
+.btn.active {
+    background-color: #FFDA27;
+    color: black
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+        
+        .container {
+            flex: 1; /* Grow to fill remaining space */
+            padding: 20px; /* Adjust padding as needed */
+            min-width: 1200px; /* Limit container width */
+            margin: 0 auto; /* Center the container horizontally */
+        }
         
         form {
             max-width: 1000px;
-            padding: 20px;
+            padding: 10px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -18,39 +121,6 @@
             position: relative;
             z-index: 1;
         }
-        footer {
-            background-color: #0927D8;
-            color: #f8f9fa;
-            padding: 20px;
-            width: 100%;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .names {
-            text-align: center;
-        }
-
-        .left-content {
-            flex: 1;
-            text-align: left; /* Align content to the left */
-        }
-
-        .right-content {
-            text-align: right; /* Align content to the right */
-        }
-
-        .left-content p,
-        .right-content p {
-            margin: 0;
-        }
-
-
-
         input[type="text"] {
             width: 100%;
             padding: 8px;
@@ -87,14 +157,41 @@
             border-radius: 5px;
             resize: vertical;
         }
-        .container {
-    max-width: 1550px;
-    margin: 150px auto 0;
-    text-align: center;
-}
+        footer {
+            background-color: #0927D8;
+            color: #f8f9fa;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .names {
+            text-align: center;
+        }
+
+        .left-content {
+            flex: 1;
+            text-align: left; /* Align content to the left */
+        }
+
+        .right-content {
+            text-align: right; /* Align content to the right */
+        }
+
+        .left-content p,
+        .right-content p {
+            margin: 0;
+        }
+
+
 .ck-editor__editable[role="textbox"] {
                 /* Editing area */
-                min-height: 350px;
+                min-height: 250px;
             }
 
 
@@ -105,7 +202,7 @@
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
-    <h1>Pangasinan State University</h1>
+    <h1>PSUnian Space</h1>
     <nav>
         <a href="profile.php" class="btn">Profile</a>
         <a href="3newsfeed.php" class="btn">Newsfeed</a>
