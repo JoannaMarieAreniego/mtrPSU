@@ -126,9 +126,9 @@ footer {
         }
         .post-img {
             max-width: 100%;
-            height: 200px; 
-            object-fit: cover;
-            border-radius: 8px;
+        height: 100px;
+        object-fit: cover; 
+        border-radius: 8px;
         }
 
     </style>
@@ -159,22 +159,12 @@ footer {
              <div class="post" id="post_<?php echo $row['postID'] ?>">
                 <h2><?php echo $row['title'] ?></a></h2>
                 <p><?php echo $row['content'] ?></p>
-                <?php if ($row['postImage']): ?>
-                    <img src="<?php echo $row['postImage'] ?>" alt="Post Image" class="post-img">
-                <?php endif; ?>
-                <?php if ($row['postImage2']): ?>
-                    <img src="<?php echo $row['postImage2'] ?>" alt="Post Image" class="post-img">
-                <?php endif; ?>
-                <?php if ($row['postImage3']): ?>
-                    <img src="<?php echo $row['postImage3'] ?>" alt="Post Image" class="post-img">
-                <?php endif; ?>
-                <?php if ($row['postImage4']): ?>
-                    <img src="<?php echo $row['postImage4'] ?>" alt="Post Image" class="post-img">
-                <?php endif; ?>
-                <?php if ($row['postImage5']): ?>
-                    <img src="<?php echo $row['postImage5'] ?>" alt="Post Image" class="post-img">
-                <?php endif; ?>
-
+                <?php
+                $filePaths = explode(',', $row['file_path']);
+                 foreach ($filePaths as $filePath) {
+                     echo '<img src="' . $filePath . '" class="post-img">';
+                 }
+                 ?>
                 <p class="post-meta">Posted: <?php echo formatPostDate($row['created_at']); ?></p>
 
                 <a href="#" class="btn btn-edit" onclick="editPost(<?php echo $row['postID'] ?>)" >Edit</a>
@@ -210,21 +200,12 @@ $result_shared = $conn->query($sql_shared);
             <div class="post" id="post_<?php echo $row_shared['postID'] ?>">
                 <h2><?php echo $row_shared['title'] ?></h2>
                 <p><?php echo $row_shared['content'] ?></p>
-                <?php if ($row_shared['postImage']): ?>
-                    <img src="<?php echo $row_shared['postImage'] ?>" alt="Post Image" class="post-img">
-                <?php endif; ?>
-                <?php if ($row_shared['postImage2']): ?>
-                    <img src="<?php echo $row_shared['postImage2'] ?>" alt="Post Image" class="post-img">
-                <?php endif; ?>
-                <?php if ($row_shared['postImage3']): ?>
-                    <img src="<?php echo $row_shared['postImage3'] ?>" alt="Post Image" class="post-img">
-                <?php endif; ?>
-                <?php if ($row_shared['postImage4']): ?>
-                    <img src="<?php echo $row_shared['postImage4'] ?>" alt="Post Image" class="post-img">
-                <?php endif; ?>
-                <?php if ($row_shared['postImage5']): ?>
-                    <img src="<?php echo $row_shared['postImage5'] ?>" alt="Post Image" class="post-img">
-                <?php endif; ?>
+                <?php
+                $filePaths = explode(',', $row_shared['file_path']);
+                 foreach ($filePaths as $filePath) {
+                     echo '<img src="' . $filePath . '" class="post-img">';
+                 }
+                 ?>
                 <p class="post-meta">Shared: <?php echo formatPostDate($row_shared['shared_at']); ?></p>
                 <button class="btn btn-delete" onclick="deleteSharedPost(<?php echo $row_shared['postID'] ?>)">Delete</button>
             </div>

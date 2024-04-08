@@ -220,7 +220,8 @@ justify-content: flex-end;
         <input type="text" id="title" name="title">
         <label for="content">CONTENT</label>
         <textarea id="content" name="content" rows="4"></textarea>
-        <label for="image1">IMAGE 1</label>
+        <input type="file" name="images[]" id="images" multiple>
+        <!-- <label for="image1">IMAGE 1</label>
         <input type="file" id="image1" name="image1">
         <div id="image2Container" style="display: none;">
             <label for="image2">IMAGE 2</label>
@@ -237,9 +238,9 @@ justify-content: flex-end;
         <div id="image5Container" style="display: none;">
             <label for="image5">IMAGE 5</label>
             <input type="file" id="image5" name="image5">
-        </div>
+        </div> -->
         <input type="submit" name="post" value="Post">
-       
+      
     </form>
 
     <footer>

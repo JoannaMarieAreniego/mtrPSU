@@ -72,9 +72,9 @@
             height: 40px;
             background: #FFDA27;
             border: none;
-            marging-bottom: 10px;
-            marging-left: 20px;
-            border-raduis: 10px;
+            margin-bottom: 10px;
+            margin-left: 20px;
+            border-radius: 10px;
             cursor: pointer;
             transition: .4s ease;
         }
@@ -105,13 +105,25 @@
             outline: none;
         }
         .form {
-            width: 250px;
-            height: 850px;
+            width: 230px;
+            height: 550px;
             background: linear-gradient(to top, rgba(0,0,0,0.5)50%, rgba(0,0,0,0.5)50%);
             position: absolute;
             top: -20px;
             bottom: -20px;
-            left: 870px;
+            left: 660px;
+            border-radius: 10px;
+            padding: 25px;
+        }
+        .form2 {
+            
+            width: 250px;
+            height: 550px;
+            background: linear-gradient(to top, rgba(0,0,0,0.5)50%, rgba(0,0,0,0.5)50%);
+            position: absolute;
+            top: -20px;
+            bottom: -20px;
+            left: 950px;
             border-radius: 10px;
             padding: 25px;
         }
@@ -154,8 +166,46 @@
             outline: none;
 
         }
-        ::placeholder {
+        .form2 h2 {
+            width: 220px;
+            font-family: sans-serif;
+            text-align: center;
+            font-size: 22px;
+            background-color: transparent;
+            border-radius: 10px;
+            margin: 2px;
+            padding: 8px;
+        }
+        .form2 h4 {
+            width: 220px;
+            font-family: sans-serif;
+            text-align: left;
+            font-size: 15px;
+            background-color: transparent;
+            border-radius: 10px;
+        }
+
+        .form2 input{
+            width: 240px;
+            height: 35px;
+            background: transparent;
+            border-bottom: 1px solid #FFDA27;
+            border-top: none;
+            border-right: none;
+            border-left: none;
             color: white;
+            font-size: 15px;
+            letter-spacing: 1px;
+            margin-top: 30px;
+            font-family:  sans-serif;
+            margin-bottom: 20px;
+        }
+        .form2 input{
+            outline: none;
+
+        }
+        ::placeholder {
+            color: gray;
             font-family: Arial;
         }
 
@@ -178,14 +228,14 @@
             color: #FFDA27;
         }
 
-        .form .link{
+        .form2 .link{
             font-family: "Arial";
             font-size: 17px;
             padding-top: 20px;
             text-align: center;
         }
 
-        .form .link a {
+        .form2 .link a {
             text-decoration: none;
             color: #FFDA27;
         }
@@ -230,7 +280,7 @@
             <br>specifically for members of the PSU community.</p>
 
         <div class="form">
-            <h2>Register Here</h2>
+            <!-- <h2>Register Here</h2> -->
             <form id="registrationForm" onsubmit="return addUser();">
                 <h4>Firstname</h4>
                 <input type="text" id="firstname" name="firstname" placeholder="Enter Firstname" onfocusout="validateUserForm();">
@@ -239,23 +289,30 @@
                 <input type="text" id="lastname" name="lastname" placeholder="Enter Lastname" onfocusout="validateUserForm();">
                 <span id="lastname_error" class="error-message"></span><br>
                 <h4>studID</h4>
-                <input type="text" id="studID" name="studID" placeholder="Enter Student No." onfocusout="validateUserForm();">
+                <input type="text" id="studID" name="studID" placeholder="XX-UR-XXXX" onfocusout="validateUserForm();">
                 <span id="studID_error" class="error-message"></span><br>
                 <h4>Username</h4>
                 <input type="text" id="username" name="username" placeholder="Enter Username" onfocusout="validateUserForm();">
                 <span id="username_error" class="error-message"></span><br>
+   
+
+    </div>
+    <div class="form2">
+                <h4>Institutional Email</h4>
+                <input type="email" id="email" name="email" placeholder="ex. 22UR0776@psu.edu.ph"  required>
+                <!-- <span id="password_error" class="error-message"></span><br> -->
                 <h4>Password</h4>
-                <input type="password" id="password" name="password" placeholder="Enter Password" required>
+                <input type="password" id="password" name="password" placeholder="Enter Password"  required>
                 <span id="password_error" class="error-message"></span><br>
                 <h4>Confirm Password</h4>
                 <input type="password" id="confirmpass" name="confirmpass" placeholder="Confirm Password" onfocusout="validateUserForm();">
                 <span id="confirmpass_error" class="error-message"></span><br> 
                 <button type="submit" name="registerButton" id="registerButton" class="btn">Register</button>
             </form>
+            
             <p class="link">Already have an account<br>
     <button type="button" name="gotologinButton" id="gotologinButton" onclick="goToLoginPage()" class="btnr">Login</button>
 </p>
-        </div>
     </div>
 </div>
 <script>
