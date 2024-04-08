@@ -1,11 +1,29 @@
-<!-- 3newsfeed.php -->
-<?php 
-   session_start();
-   if (!isset($_SESSION['studID'])) {
+<!-- groupFeed.php -->
+<?php
+require "0conn.php";
+session_start();
+
+if (!isset($_SESSION['studID'])) {
     header("Location: logintry.php");
     exit;
 }
+
+if (!isset($_GET['groupID'])) {
+    header("Location: groups.php");
+    exit;
+}
+
+$studID = $_SESSION['studID'];
+$groupID = $_GET['groupID'];
+$getGroupSQL = "SELECT * FROM groups WHERE groupID = '$groupID'";
+$groupResult = $conn->query($getGroupSQL);
+$group = $groupResult->fetch_assoc();
+$getGroupPostsSQL = "SELECT * FROM group_posts WHERE groupID = '$groupID'";
+$groupPostsResult = $conn->query($getGroupPostsSQL);
+
+$conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +31,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <title>Newsfeed</title>
-
+    <title><?php echo $group['groupname']; ?> - Group Details</title>
     <style>
         
         body {
@@ -30,7 +47,7 @@
         .container {
             flex: 1; /* Grow to fill remaining space */
             padding: 20px; /* Adjust padding as needed */
-            min-width: 500px; /* Limit container width */
+            min-width: 1200px; /* Limit container width */
             margin: 0 auto; /* Center the container horizontally */
         }
 
@@ -38,7 +55,7 @@
             background-color: #0927D8;
             color: #f8f9fa;
             padding: 20px;
-            width: 100%;
+            width: 96%;
         }
 
         .footer-content {
@@ -73,7 +90,7 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
         padding: 20px;
-        text-align: left;
+        text-align: center;
         position: relative;
     }
 
@@ -95,14 +112,14 @@
     }
 
     .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 120px auto 20px;
             padding: 0 20px;
         }
 
     .post-image {
         max-width: 100%;
-        height: 100px;
+        height: 200px;
         object-fit: cover; 
         border-radius: 8px;
     }
@@ -124,32 +141,48 @@
         cursor: pointer;
     }
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 500px) {
         .container {
                 padding: 0 10px;
             }
             
         }
-        
 </style>
 </head>
 <body>
+
+<?php
+function isModerator($studID, $groupID) {
+    require "0conn.php";
+    
+    $checkModeratorSQL = "SELECT * FROM groupmembers WHERE studID = '$studID' AND groupID = '$groupID' AND is_moderator = 1";
+    $result = $conn->query($checkModeratorSQL);
+    
+    $conn->close();
+    
+    return $result->num_rows > 0;
+}
+?>
+
 
 <header>
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
-    <h1>PSUnian Space</h1>
+    <h1>PSUnian's Space</h1>
     <nav>
-        <a href="profile.php" class="btn">Profile</a>
-        <a href="3newsfeed.php" class="btn active">Newsfeed</a>
-        <a href="createPost.php" class="btn">Create Post</a>
-        <a href="groups.php" class="btn">Groups</a>
-        <a href="faq.php" class="btn">FAQs</a>
+        <a href="3newsfeed.php" class="btn">Home</a>
+        <a href="groupFeed.php" class="btn active">Group Feed</a>
+        <a href="groupCreatePost.php?groupID=<?php echo $groupID; ?>" class="btn">Create Post</a>
+        <?php
+            if ($_SESSION['studID'] == $group['created_by'] || isModerator($_SESSION['studID'], $groupID)) {
+                echo '<a href="groupManage.php?groupID=' . $groupID . '" class="btn">Manage Group</a>';
+            }
+        ?>
         <a href="logout.php" class="btn">Logout</a>
     </nav>
 </header>
-        
+
 
     <div class="container" id="postsContainer">
         
@@ -174,10 +207,11 @@
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js?ver=002"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            var loading = false;
-            loadPosts(); 
+            var loading = false; 
+            gloadPosts(); 
             $(window).scroll(function() {
                 if ($('#postsContainer').length && !loading) {
                     var scrollTop = $(window).scrollTop();
@@ -187,72 +221,60 @@
                     var bottomOffset = containerOffset + containerHeight - windowHeight;
                     if (scrollTop >= bottomOffset && scrollTop <= bottomOffset + 5000) {
                         loading = true;
-                        loadMorePosts();
                     }
                 }
             });
         });
 
-        function loadPosts() {
+
+        function gloadPosts() {
             $.ajax({
-                url: 'loadPosts.php',
+                url: 'groupLoadPost.php',
                 method: 'GET',
+                data: { groupID: <?php echo $groupID; ?> },
                 success: function(response) {
                     $('#postsContainer').html(response);
                 }
             });
         }
 
-        function loadMorePosts() {
-            var lastPostID = $('.post:last').data('post-id');
-            console.log("Last Post ID:", lastPostID);
+        function glikePost(gpostID) {
+            var likeButton = $('#likeButton-' + gpostID);
+            var isLiked = likeButton.hasClass('liked');
             $.ajax({
-                url: 'loadMorePosts.php',
-                method: 'GET',
-                data: { lastPostID: lastPostID },
+                url: 'groupAddLike.php',
+                method: 'POST',
+                data: { gpostID: gpostID, isLiked: isLiked ? 0 : 1 },
                 success: function(response) {
-                    if (response.trim() !== 'No more posts found.') {
-                        $('#postsContainer').append(response);
+                    console.log(response);
+                    if (isLiked) {
+                        likeButton.removeClass('liked').text('Like');
+                    } else {
+                        likeButton.addClass('liked').text('Liked');
                     }
-                    loading = false;
+                    gupdateLikeInfo(gpostID);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
                 }
             });
         }
 
-    function likePost(postID) {
-        var likeButton = $('#likeButton-' + postID);
-        var isLiked = likeButton.hasClass('liked');
-
-        $.ajax({
-            url: 'addLike.php',
-            method: 'POST',
-            data: { postID: postID, isLiked: isLiked ? 0 : 1 },
-            success: function(response) {
-                console.log(response);
-                if (isLiked) {
-                    likeButton.removeClass('liked').text('Like');
-                } else {
-                    likeButton.addClass('liked').text('Liked');
-                }
-                updateLikeInfo(postID);
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    }
-
-        function updateLikeInfo(postID) {
+        function gupdateLikeInfo(gpostID) {
             $.ajax({
-                url: 'updateLike.php',
+                url: 'groupUpdateLike.php',
                 method: 'POST',
-                data: { postID: postID },
+                data: { gpostID: gpostID },
                 dataType: 'json',
                 success: function(response) {
                     var likeCount = response.likeCount;
                     var likedUsers = response.likedUsers.join(', ');
-                    var likeInfoElement = $('#likeInfo-' + postID);
-                    likeInfoElement.html('Liked by ' + likedUsers);
+                    var likeInfoElement = $('#likeInfo-' + gpostID);
+                    if (likeCount > 0) {
+                        likeInfoElement.html('Liked by ' + likedUsers);
+                    } else {
+                        likeInfoElement.html('No likes yet');
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);

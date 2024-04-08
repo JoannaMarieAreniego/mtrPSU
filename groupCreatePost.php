@@ -1,3 +1,15 @@
+<!-- groupCreatePost.php -->
+<?php
+session_start();
+// Check if groupID is set in the URL
+if (!isset($_GET['groupID'])) {
+    header("Location: groups.php"); // Redirect to groups.php if groupID is not set
+    exit;
+}
+// Retrieve groupID from URL parameter
+$groupID = $_GET['groupID'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -198,19 +210,18 @@ justify-content: flex-end;
     </style>
 </head>
 <body>
-    <header>
+<header>
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
-    <h1>PSUnian Space</h1>
+    <h1>PSUnian's Space</h1>
     <nav>
-        <a href="profile.php" class="btn">Profile</a>
-        <a href="3newsfeed.php" class="btn">Newsfeed</a>
-        <a href="createPost.php" class="btn active">Create Post</a>
-        <a href="faq.php" class="btn">FAQs</a>
+        <a href="3newsfeed.php" class="btn">Home</a>
+        <a href="groupFeed.php" class="btn">Group Feed</a>
+        <a href="groupCreatePost.php?groupID=<?php echo $groupID; ?>" class="btn active">Create Post</a>
         <a href="logout.php" class="btn">Logout</a>
     </nav>
-    </header>
+</header>
 
     <div class="container">
     <h1>Create a Post</h1>
@@ -221,8 +232,9 @@ justify-content: flex-end;
         <label for="content">CONTENT</label>
         <textarea id="content" name="content" rows="4"></textarea>
         <input type="file" name="images[]" id="images" multiple>
+        <input type="hidden" id="groupID" name="groupID" value="<?php echo $groupID; ?>">
         <input type="submit" name="post" value="Post">
-      
+       
     </form>
 
     <footer>
@@ -271,14 +283,14 @@ justify-content: flex-end;
             formData.append('content', $('#content').val());
 
             $.ajax({
-                url: 'create.php',
+                url: 'groupCreate.php',
                 method: 'POST',
                 data: formData,
                 contentType: false,
                 processData: false,
                 success: function(response){
                     alert(response); 
-                    window.location.href = '3newsfeed.php';
+                    window.location.href = 'groupFeed.php?groupID=<?php echo $groupID; ?>';
                 }
             });
         });
