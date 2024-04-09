@@ -36,7 +36,7 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         ?>
         <div class="post" data-post-id="<?php echo $row['postID']; ?>">
-            <h2><a href="#?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
+            <h2><a href="post_details.php?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
             <?php if (!empty($row['shared_by_studID'])): ?>
                 <p><em>Shared by <?php echo $row['shared_by_username']; ?>  <?php echo formatSharedDate($row['shared_at']); ?></em></p>
             <?php endif; ?>
@@ -79,6 +79,7 @@ if ($result->num_rows > 0) {
            
                 <button class="btn" onclick="window.location.href='post_details.php?id=<?php echo $row['postID']; ?>'">Comment</button>
                 <button class="btn" onclick="resharePost(<?php echo $row['postID']; ?>)">Share</button>
+                <button class="btn" onclick="reportPost(<?php echo $row['postID']; ?>)">Report</button>
             </div>
         </div>
         <?php
@@ -263,10 +264,75 @@ if ($result->num_rows > 0) {
     });
 }
 
+function reportPost(postID) {
+    var reasonOptions = ["Offensive content", "Spam", "Inappropriate", "Other"];
+    Swal.fire({
+        title: 'Report Post',
+        html: '<p>Please select the reason for reporting this post:</p>' +
+            reasonOptions.map(option => `<label><input type="checkbox" name="reason" value="${option}" onclick="toggleCustomReason(this)"> ${option}</label><br>`).join('') +
+            '<label><input type="checkbox" name="reason" value="Other" onclick="toggleCustomReason(this)"> Other (Please specify): </label>' +
+            '<input type="text" id="customReason" style="display: none;"><br>',
+        showCancelButton: true,
+        confirmButtonText: 'Submit',
+        preConfirm: () => {
+            var selectedReasons = $('input[name="reason"]:checked').map(function() {
+                return this.value;
+            }).get();
+            var customReason = $('#customReason').val();
+            if (selectedReasons.includes("Other") && customReason.trim() === "") {
+                Swal.showValidationMessage('Please specify the reason for reporting.');
+                return false;
+            }
+            var reasons = selectedReasons.join(", ");
+            if (selectedReasons.includes("Other")) {
+                reasons += " - " + customReason;
+            }
+            $.ajax({
+                url: 'reportPost.php',
+                method: 'POST',
+                data: { postID: postID, reason: reasons },
+                success: function(response) {
+                    if (response.trim() === 'Error') {
+                        Swal.showValidationMessage('Error reporting post. Please try again.');
+                        return;
+                    }
+                    Swal.fire('Post reported successfully', '', 'success').then(() => location.reload());
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    Swal.showValidationMessage('Error reporting post. Please try again.');
+                }
+            });
+        }
+    });
+}
+
+function toggleCustomReason(checkbox) {
+    var customReasonInput = $('#customReason');
+    if (checkbox.checked && checkbox.value === "Other") {
+        customReasonInput.show();
+    } else {
+        customReasonInput.hide();
+    }
+}
+
+
+
+
+
 
 </script>
 
 <style>
+
+
+
+.swal2-checkbox label {
+    display: block;
+    text-align: left;
+}
+
+
     .likers-popup {
         position: fixed;
         top: 50%;

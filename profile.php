@@ -200,6 +200,7 @@ $result_shared = $conn->query($sql_shared);
             <div class="post" id="post_<?php echo $row_shared['postID'] ?>">
                 <h2><?php echo $row_shared['title'] ?></h2>
                 <p><?php echo $row_shared['content'] ?></p>
+
                 <?php
                 $filePaths = explode(',', $row_shared['file_path']);
                  foreach ($filePaths as $filePath) {
@@ -238,38 +239,87 @@ $result_shared = $conn->query($sql_shared);
     </footer>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
     function editPost(postId) {
         window.location.href = "editPost.php?post_id=" + postId;
     }
-
     function deletePost(postId) {
-    if (confirm("Are you sure you want to delete this post?")) {
-        $.ajax({
-            url: 'delete.php',
-            method: 'POST',
-            data: { post_id: postId },
-            success: function(response){
-                alert(response);
-                $('#post_' + postId).remove();
-            }
-        });
-    }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'delete.php',
+                method: 'POST',
+                data: { post_id: postId },
+                success: function(response){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: response,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('#post_' + postId).remove();
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: xhr.responseText,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        }
+    });
 }
+
 function deleteSharedPost(postId) {
-        if (confirm("Are you sure you want to delete this shared post?")) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this shared post!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it'
+    }).then((result) => {
+        if (result.isConfirmed) {
             $.ajax({
                 url: 'deleteSharedPost.php',
                 method: 'POST',
                 data: { post_id: postId },
                 success: function(response){
-                    alert(response);
-                    $('#post_' + postId).remove();
-                    location.reload();
+                    Swal.fire(
+                        'Deleted!',
+                        'Your shared post has been deleted.',
+                        'success'
+                    ).then(() => {
+                        $('#post_' + postId).remove();
+                        location.reload();
+                    });
                 }
             });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelled',
+                'Your shared post is safe :)',
+                'error'
+            );
         }
-    }
+    });
+}
+
+
 </script>
 </body>
 </html>

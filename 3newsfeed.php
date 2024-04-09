@@ -13,6 +13,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
+
+    <link href="path/to/bootstrap.min.css" rel="stylesheet">
+<script src="path/to/jquery.min.js"></script>
+<script src="path/to/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
     <title>Newsfeed</title>
 
     <style>
@@ -123,6 +130,7 @@
         color: #fff;
         cursor: pointer;
     }
+    
 
     @media only screen and (max-width: 600px) {
         .container {
@@ -259,5 +267,6 @@
             });
         }
     </script>
+    
 </body>
 </html>

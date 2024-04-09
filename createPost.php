@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <!-- <link rel="stylesheet" type="text/css" href="style.css?version=001"> -->
     <style>
 
@@ -282,24 +284,45 @@ justify-content: flex-end;
         });
 
         $('#postForm').submit(function(event){
-            event.preventDefault();
+    event.preventDefault();
 
-            var formData = new FormData(this);
-            formData.append('title', $('#title').val());
-            formData.append('content', $('#content').val());
+    var formData = new FormData(this);
+    formData.append('title', $('#title').val());
+    formData.append('content', $('#content').val());
 
-            $.ajax({
-                url: 'create.php',
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response){
-                    alert(response); 
+    $.ajax({
+        url: 'create.php',
+        method: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response){
+            if (response.trim().startsWith('Error:')) {
+    // Handle error response
+    Swal.fire({
+        icon: 'warning',
+        title: 'Error',
+        text: response.substring(8).trim(), // Remove 'Error:' prefix
+        showConfirmButton: false,
+        timer: 1200
+    });
+}
+ else {
+                // Handle success response
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response,
+                    showConfirmButton: false,
+                    timer: 1200
+                }).then(() => {
                     window.location.href = '3newsfeed.php';
-                }
-            });
-        });
+                });
+            }
+        }
+    });
+});
+
     });
 </script>
 
