@@ -1,3 +1,15 @@
+<!-- groupCreatePost.php -->
+<?php
+session_start();
+// Check if groupID is set in the URL
+if (!isset($_GET['groupID'])) {
+    header("Location: groups.php"); // Redirect to groups.php if groupID is not set
+    exit;
+}
+// Retrieve groupID from URL parameter
+$groupID = $_GET['groupID'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +17,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
     <!-- <link rel="stylesheet" type="text/css" href="style.css?version=001"> -->
     <style>
 
@@ -200,19 +210,18 @@ justify-content: flex-end;
     </style>
 </head>
 <body>
-    <header>
+<header>
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
-    <h1>PSUnian Space</h1>
+    <h1>PSUnian's Space</h1>
     <nav>
-        <a href="profile.php" class="btn">Profile</a>
-        <a href="3newsfeed.php" class="btn">Newsfeed</a>
-        <a href="createPost.php" class="btn active">Create Post</a>
-        <a href="faq.php" class="btn">FAQs</a>
+        <a href="3newsfeed.php" class="btn">Home</a>
+        <a href="groupFeed.php" class="btn">Group Feed</a>
+        <a href="groupCreatePost.php?groupID=<?php echo $groupID; ?>" class="btn active">Create Post</a>
         <a href="logout.php" class="btn">Logout</a>
     </nav>
-    </header>
+</header>
 
     <div class="container">
     <h1>Create a Post</h1>
@@ -223,8 +232,9 @@ justify-content: flex-end;
         <label for="content">CONTENT</label>
         <textarea id="content" name="content" rows="4"></textarea>
         <input type="file" name="images[]" id="images" multiple>
+        <input type="hidden" id="groupID" name="groupID" value="<?php echo $groupID; ?>">
         <input type="submit" name="post" value="Post">
-      
+       
     </form>
 
     <footer>
@@ -266,45 +276,24 @@ justify-content: flex-end;
         });
 
         $('#postForm').submit(function(event){
-    event.preventDefault();
+            event.preventDefault();
 
-    var formData = new FormData(this);
-    formData.append('title', $('#title').val());
-    formData.append('content', $('#content').val());
+            var formData = new FormData(this);
+            formData.append('title', $('#title').val());
+            formData.append('content', $('#content').val());
 
-    $.ajax({
-        url: 'create.php',
-        method: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response){
-            if (response.trim().startsWith('Error:')) {
-    // Handle error response
-    Swal.fire({
-        icon: 'warning',
-        title: 'Error',
-        text: response.substring(8).trim(), // Remove 'Error:' prefix
-        showConfirmButton: false,
-        timer: 1200
-    });
-}
- else {
-                // Handle success response
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: response,
-                    showConfirmButton: false,
-                    timer: 1200
-                }).then(() => {
-                    window.location.href = '3newsfeed.php';
-                });
-            }
-        }
-    });
-});
-
+            $.ajax({
+                url: 'groupCreate.php',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response){
+                    alert(response); 
+                    window.location.href = 'groupFeed.php?groupID=<?php echo $groupID; ?>';
+                }
+            });
+        });
     });
 </script>
 

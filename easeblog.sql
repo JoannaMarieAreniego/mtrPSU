@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2024 at 04:16 PM
+-- Generation Time: Apr 08, 2024 at 12:57 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -83,6 +83,15 @@ CREATE TABLE `groupmembers` (
   `joined_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `groupmembers`
+--
+
+INSERT INTO `groupmembers` (`gmID`, `groupID`, `studID`, `is_moderator`, `joined_at`) VALUES
+(84, 20, '22-UR-111', '1', '2024-04-08 10:36:15'),
+(85, 20, '21-UR-0123', '0', '2024-04-08 10:36:15'),
+(86, 20, '22-UR-0776', '0', '2024-04-08 10:36:15');
+
 -- --------------------------------------------------------
 
 --
@@ -96,6 +105,64 @@ CREATE TABLE `groups` (
   `group_created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_by` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `groups`
+--
+
+INSERT INTO `groups` (`groupID`, `groupname`, `description`, `group_created_at`, `created_by`) VALUES
+(20, 'SSC', 'BOOM PASADO', '2024-04-08 10:36:15', '22-UR-111');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group_comments`
+--
+
+CREATE TABLE `group_comments` (
+  `gcommentID` int(11) NOT NULL,
+  `gpostID` int(11) DEFAULT NULL,
+  `studID` varchar(20) DEFAULT NULL,
+  `comment` text DEFAULT NULL,
+  `commentCreated` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group_likes`
+--
+
+CREATE TABLE `group_likes` (
+  `glikeID` int(11) NOT NULL,
+  `gpostID` int(11) DEFAULT NULL,
+  `studID` varchar(20) DEFAULT NULL,
+  `likeCreated` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group_posts`
+--
+
+CREATE TABLE `group_posts` (
+  `gpostID` int(11) NOT NULL,
+  `groupID` int(11) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` text DEFAULT NULL,
+  `studID` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `file_path` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `group_posts`
+--
+
+INSERT INTO `group_posts` (`gpostID`, `groupID`, `title`, `content`, `studID`, `created_at`, `file_path`) VALUES
+(16, 20, 'SDFF', '<p>FSDFFSDFsaF</p>', '22-UR-111', '2024-04-08 10:36:35', ''),
+(17, 20, 'ASDASDA', '<p>ASDASDASD</p>', '22-UR-111', '2024-04-08 10:36:45', 'images/PSUP4.jpg,images/PSUP3.png');
 
 -- --------------------------------------------------------
 
@@ -122,12 +189,15 @@ CREATE TABLE `posts` (
   `content` text NOT NULL,
   `studID` varchar(20) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `postImage` varchar(255) NOT NULL,
-  `postImage2` varchar(255) NOT NULL,
-  `postImage3` text NOT NULL,
-  `postImage4` text NOT NULL,
-  `postImage5` text NOT NULL
+  `file_path` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`postID`, `title`, `content`, `studID`, `created_at`, `file_path`) VALUES
+(117, 'fgger', '<p>tertert</p>', '22-UR-111', '2024-04-08 09:27:06', 'images/PSUP4.jpg,images/PSUP3.png');
 
 -- --------------------------------------------------------
 
@@ -178,7 +248,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`studID`, `firstname`, `lastname`, `username`, `password`, `date_registered`) VALUES
-('21-UR-0123', 'Joanna Marie', 'Areniego', 'joanna', '12345', '2024-04-04');
+('21-UR-0123', 'Joanna Marie', 'Areniego', 'joanna', '12345', '2024-04-04'),
+('22-UR-0776', 'Cindy', 'Aspiras', 'cindyasp', '12345', '2024-04-08'),
+('22-UR-111', 'Christine', 'Areniego', 'tintin', '12345', '2024-04-08'),
+('admin', '', '', 'admin', 'admin123', '2024-04-07');
 
 --
 -- Indexes for dumped tables
@@ -220,6 +293,30 @@ ALTER TABLE `groupmembers`
 ALTER TABLE `groups`
   ADD PRIMARY KEY (`groupID`),
   ADD KEY `groups_ibfk_1` (`created_by`);
+
+--
+-- Indexes for table `group_comments`
+--
+ALTER TABLE `group_comments`
+  ADD PRIMARY KEY (`gcommentID`),
+  ADD KEY `group_comments_ibfk_1` (`gpostID`),
+  ADD KEY `group_comments_ibfk_2` (`studID`);
+
+--
+-- Indexes for table `group_likes`
+--
+ALTER TABLE `group_likes`
+  ADD PRIMARY KEY (`glikeID`),
+  ADD KEY `group_likes_ibfk_1` (`gpostID`),
+  ADD KEY `group_likes_ibfk_2` (`studID`);
+
+--
+-- Indexes for table `group_posts`
+--
+ALTER TABLE `group_posts`
+  ADD PRIMARY KEY (`gpostID`),
+  ADD KEY `group_posts_ibfk_1` (`groupID`),
+  ADD KEY `group_posts_ibfk_2` (`studID`);
 
 --
 -- Indexes for table `likes`
@@ -285,25 +382,43 @@ ALTER TABLE `favorites`
 -- AUTO_INCREMENT for table `groupmembers`
 --
 ALTER TABLE `groupmembers`
-  MODIFY `gmID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `gmID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `groupID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `groupID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `group_comments`
+--
+ALTER TABLE `group_comments`
+  MODIFY `gcommentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `group_likes`
+--
+ALTER TABLE `group_likes`
+  MODIFY `glikeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
+-- AUTO_INCREMENT for table `group_posts`
+--
+ALTER TABLE `group_posts`
+  MODIFY `gpostID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `likeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `likeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `postID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `postID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
 
 --
 -- AUTO_INCREMENT for table `reports`
@@ -315,7 +430,7 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `shared_posts`
 --
 ALTER TABLE `shared_posts`
-  MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `shareID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
@@ -347,6 +462,27 @@ ALTER TABLE `groupmembers`
 --
 ALTER TABLE `groups`
   ADD CONSTRAINT `groups_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`studID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `group_comments`
+--
+ALTER TABLE `group_comments`
+  ADD CONSTRAINT `group_comments_ibfk_1` FOREIGN KEY (`gpostID`) REFERENCES `group_posts` (`gpostID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `group_comments_ibfk_2` FOREIGN KEY (`studID`) REFERENCES `users` (`studID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `group_likes`
+--
+ALTER TABLE `group_likes`
+  ADD CONSTRAINT `group_likes_ibfk_1` FOREIGN KEY (`gpostID`) REFERENCES `group_posts` (`gpostID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `group_likes_ibfk_2` FOREIGN KEY (`studID`) REFERENCES `users` (`studID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `group_posts`
+--
+ALTER TABLE `group_posts`
+  ADD CONSTRAINT `group_posts_ibfk_1` FOREIGN KEY (`groupID`) REFERENCES `groups` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `group_posts_ibfk_2` FOREIGN KEY (`studID`) REFERENCES `users` (`studID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `likes`

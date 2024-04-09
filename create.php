@@ -138,10 +138,9 @@ if(isset($_POST['title']) && isset($_POST['content'])){
     //     }
     // }
 
-    $files = $_FILES['images'];
-    $uploadPath = 'images/';
-    $fileNames = array();
-    $uploadOk = 1;
+        $files = $_FILES['images'];
+        $uploadPath = 'images/';
+        $fileNames = array();
     
     // Check if any files were uploaded
     if (!empty($files['tmp_name'][0])) {
