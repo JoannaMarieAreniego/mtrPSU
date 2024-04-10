@@ -163,6 +163,7 @@ body {
     <h1>Pangasinan State University</h1>
     <nav>
         <a href="admin_newsfeed.php" class="btn active">Newsfeed</a>
+        <a href="reportedPost.php" class="btn">Reports</a>
         <a href="manageAccount.php" class="btn">Manage Accounts</a>
         <a href="logout.php" class="btn">Logout</a>
     </nav>
