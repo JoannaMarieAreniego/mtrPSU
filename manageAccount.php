@@ -119,6 +119,7 @@
     </div>
     <h1>PSUnian Space</h1>
     <nav>
+        <a href="dashboard.php" class="btn">Dashboard</a>
         <a href="admin_newsfeed.php" class="btn">Newsfeed</a>
         <a href="reportedPost.php" class="btn">Reports</a>
         <a href="manageAccount.php" class="btn active">Manage Accounts</a>
