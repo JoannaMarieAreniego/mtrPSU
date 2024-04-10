@@ -15,14 +15,14 @@ if ($result->num_rows > 0) {
             <h2><a href="admin_post_details.php?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
             <p><?php echo $row['content'] ?></p>
             <div class="post-container">
-                <?php 
+            <?php 
                     
-                 $filePaths = explode(',', $row['file_path']);
-                 foreach ($filePaths as $filePath) {
-                     echo '<img src="' . $filePath . '"  class="post-image">';
-                 }
-
-                ?>
+                    $filePaths = explode(',', $row['file_path']);
+                    foreach ($filePaths as $filePath) {
+                        echo '<img src="' . $filePath . '"  class="post-image">';
+                    }
+   
+                   ?>
             </div>
             <p class="post-meta">By <?php echo $row['username'] ?> <?php echo formatPostDate($row['created_at']); ?></p>
         </div>

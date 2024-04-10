@@ -120,6 +120,7 @@
     <h1>PSUnian Space</h1>
     <nav>
         <a href="admin_newsfeed.php" class="btn">Newsfeed</a>
+        <a href="reportedPost.php" class="btn">Reports</a>
         <a href="manageAccount.php" class="btn active">Manage Accounts</a>
         <a href="logout.php" class="btn">Logout</a>
     </header>

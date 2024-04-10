@@ -173,14 +173,14 @@ body {
             <h2><?php echo $row['title']; ?></h2>
             <p><?php echo $row['content']; ?></p>
             <div class="image-container">
-                <?php 
-                    $postImages = array($row['postImage'], $row['postImage2'], $row['postImage3'], $row['postImage4'], $row['postImage5']);
-                    foreach($postImages as $image) {
-                        if (!empty($image)) {
-                            echo '<img src="' . $image . '" alt="Post Image" class="post-image">';
-                        }
+            <?php 
+                    
+                    $filePaths = explode(',', $row['file_path']);
+                    foreach ($filePaths as $filePath) {
+                        echo '<img src="' . $filePath . '"  class="post-image">';
                     }
-                ?>
+   
+                   ?>
             </div>
             <p class="post-meta">By <?php echo $row['username'] ?> <?php echo formatPostDate($row['created_at']); ?></p>
             <?php if ($_SESSION['studID'] == 'admin') { ?>
