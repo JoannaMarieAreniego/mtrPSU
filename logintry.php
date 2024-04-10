@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <script src="js/jquery-3.3.1.js?ver=002"></script>
-    <script src="js/2login.js?ver=005"></script>
+    <script src="js/jquery-3.3.1.js?ver=003"></script>
+    <script src="js/2login.js?ver=006"></script>
     <style>
          *{
             margin:0;

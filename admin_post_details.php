@@ -162,7 +162,13 @@ body {
     </div>
     <h1>Pangasinan State University</h1>
     <nav>
+        <a href="dashboard.php" class="btn">Dashboard</a>
         <a href="admin_newsfeed.php" class="btn active">Newsfeed</a>
+        <div class="dropdown">
+        <a href="reportedPost.php" class="btn active">Reports</a>
+        <div class="dropdown-content">
+        <a href="reportedPost.php">Pending</a>
+        <a href="rejectedPost.php">Rejected</a>
         <a href="manageAccount.php" class="btn">Manage Accounts</a>
         <a href="logout.php" class="btn">Logout</a>
     </nav>

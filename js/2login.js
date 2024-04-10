@@ -38,7 +38,7 @@ function loginUser() {
             response = JSON.parse(response);
             if (response.status === "success") {
                 if (response.type === "admin") {
-                    window.location.href = "admin_newsfeed.php";
+                    window.location.href = "dashboard.php";
                 } else {
                     window.location.href = "3newsfeed.php";
                 }
