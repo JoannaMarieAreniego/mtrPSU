@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2024 at 12:57 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Apr 10, 2024 at 04:59 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `easeblog`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accept_reports`
+--
+
+CREATE TABLE `accept_reports` (
+  `acceptID` int(11) NOT NULL,
+  `reportID` int(11) NOT NULL,
+  `postID` int(11) NOT NULL,
+  `reporterID` varchar(20) NOT NULL,
+  `reason` text NOT NULL,
+  `report_created_at` int(11) NOT NULL,
+  `status` enum('approved') NOT NULL DEFAULT 'approved',
+  `accepted_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `accept_reports`
+--
+
+INSERT INTO `accept_reports` (`acceptID`, `reportID`, `postID`, `reporterID`, `reason`, `report_created_at`, `status`, `accepted_date`) VALUES
+(39, 58, 125, '21-UR-0123', 'Offensive content', 2147483647, 'approved', '2024-04-10 02:38:28'),
+(40, 61, 127, '21-UR-0123', 'Spam', 2147483647, 'approved', '2024-04-10 02:41:04');
 
 -- --------------------------------------------------------
 
@@ -189,15 +214,45 @@ CREATE TABLE `posts` (
   `content` text NOT NULL,
   `studID` varchar(20) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `file_path` text NOT NULL
+  `file_path` text NOT NULL,
+  `report` enum('undefined','rejected','approved') DEFAULT 'undefined'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`postID`, `title`, `content`, `studID`, `created_at`, `file_path`) VALUES
-(117, 'fgger', '<p>tertert</p>', '22-UR-111', '2024-04-08 09:27:06', 'images/PSUP4.jpg,images/PSUP3.png');
+INSERT INTO `posts` (`postID`, `title`, `content`, `studID`, `created_at`, `file_path`, `report`) VALUES
+(117, 'fgger', '<p>tertert</p>', '22-UR-111', '2024-04-08 09:27:06', 'images/PSUP4.jpg,images/PSUP3.png', ''),
+(125, 'approved report', '<p>approved approved</p>', '21-UR-0123', '2024-04-10 02:37:46', '', 'approved'),
+(126, 'REJECT', '<p>REJECT</p>', '21-UR-0123', '2024-04-10 02:40:25', '', 'rejected'),
+(127, 'APPROVE', '<p>APPROVE</p>', '21-UR-0123', '2024-04-10 02:40:37', '', 'approved');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rejectedreports`
+--
+
+CREATE TABLE `rejectedreports` (
+  `rejectID` int(11) NOT NULL,
+  `reportID` int(11) NOT NULL,
+  `postID` int(11) NOT NULL,
+  `reporterID` varchar(20) NOT NULL,
+  `reason` text NOT NULL,
+  `report_created_at` varchar(255) NOT NULL,
+  `status` enum('reject') NOT NULL DEFAULT 'reject',
+  `rejected_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rejectedreports`
+--
+
+INSERT INTO `rejectedreports` (`rejectID`, `reportID`, `postID`, `reporterID`, `reason`, `report_created_at`, `status`, `rejected_date`) VALUES
+(18, 19, 117, '21-UR-0123', 'Inappropriate', '2024-04-10 09:27:55', 'reject', '2024-04-10 01:34:36'),
+(20, 21, 117, '21-UR-0123', 'Offensive content', '2024-04-10 09:34:52', 'reject', '2024-04-10 01:38:40'),
+(36, 60, 126, '21-UR-0123', 'Offensive content', '2024-04-10 10:40:44', 'reject', '2024-04-10 02:41:06');
 
 -- --------------------------------------------------------
 
@@ -258,6 +313,14 @@ INSERT INTO `users` (`studID`, `firstname`, `lastname`, `username`, `password`, 
 --
 
 --
+-- Indexes for table `accept_reports`
+--
+ALTER TABLE `accept_reports`
+  ADD PRIMARY KEY (`acceptID`),
+  ADD KEY `ForeignKeyy1` (`reporterID`),
+  ADD KEY `ForeignKeyy2` (`postID`);
+
+--
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
@@ -276,8 +339,8 @@ ALTER TABLE `faq`
 --
 ALTER TABLE `favorites`
   ADD PRIMARY KEY (`favID`),
-  ADD KEY `postID` (`postID`),
-  ADD KEY `studID` (`studID`);
+  ADD KEY `favorites_ibfk_1` (`postID`),
+  ADD KEY `favorites_ibfk_2` (`studID`);
 
 --
 -- Indexes for table `groupmembers`
@@ -334,6 +397,14 @@ ALTER TABLE `posts`
   ADD KEY `studID` (`studID`);
 
 --
+-- Indexes for table `rejectedreports`
+--
+ALTER TABLE `rejectedreports`
+  ADD PRIMARY KEY (`rejectID`),
+  ADD KEY `ForeignKey` (`postID`),
+  ADD KEY `ForeignKey1` (`reporterID`);
+
+--
 -- Indexes for table `reports`
 --
 ALTER TABLE `reports`
@@ -361,6 +432,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `accept_reports`
+--
+ALTER TABLE `accept_reports`
+  MODIFY `acceptID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
@@ -376,7 +453,7 @@ ALTER TABLE `faq`
 -- AUTO_INCREMENT for table `favorites`
 --
 ALTER TABLE `favorites`
-  MODIFY `favID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `favID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `groupmembers`
@@ -412,19 +489,25 @@ ALTER TABLE `group_posts`
 -- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `likeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `likeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `postID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `postID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+
+--
+-- AUTO_INCREMENT for table `rejectedreports`
+--
+ALTER TABLE `rejectedreports`
+  MODIFY `rejectID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `reportID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `reportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `shared_posts`
@@ -437,6 +520,13 @@ ALTER TABLE `shared_posts`
 --
 
 --
+-- Constraints for table `accept_reports`
+--
+ALTER TABLE `accept_reports`
+  ADD CONSTRAINT `ForeignKeyy1` FOREIGN KEY (`reporterID`) REFERENCES `users` (`studID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ForeignKeyy2` FOREIGN KEY (`postID`) REFERENCES `posts` (`postID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `comments`
 --
 ALTER TABLE `comments`
@@ -447,7 +537,7 @@ ALTER TABLE `comments`
 -- Constraints for table `favorites`
 --
 ALTER TABLE `favorites`
-  ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`postID`) REFERENCES `posts` (`postID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`postID`) REFERENCES `posts` (`postID`) ON DELETE CASCADE,
   ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`studID`) REFERENCES `users` (`studID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -496,6 +586,13 @@ ALTER TABLE `likes`
 --
 ALTER TABLE `posts`
   ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`studID`) REFERENCES `users` (`studID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `rejectedreports`
+--
+ALTER TABLE `rejectedreports`
+  ADD CONSTRAINT `ForeignKey` FOREIGN KEY (`postID`) REFERENCES `posts` (`postID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ForeignKey1` FOREIGN KEY (`reporterID`) REFERENCES `users` (`studID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reports`
