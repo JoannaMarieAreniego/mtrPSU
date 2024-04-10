@@ -17,7 +17,7 @@ $memberGroupsResult = $conn->query($getMemberGroupsSQL);
 $getAdminGroupsSQL = "SELECT DISTINCT groups.groupID, groups.groupname, groups.description 
                       FROM groups 
                       INNER JOIN groupmembers ON groups.groupID = groupmembers.groupID 
-                      WHERE (groupmembers.studID = '$studID' AND groupmembers.is_moderator = 1)
+                      WHERE (groupmembers.studID = '$studID' AND groupmembers.is_moderator = '1')
                       OR groups.created_by = '$studID'";
 $adminGroupsResult = $conn->query($getAdminGroupsSQL);
 
@@ -42,24 +42,24 @@ $conn->close();
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background-color: #f8f9fa; /* Light blue */
+            background-color: #f8f9fa; 
             color: #343a40;
             margin: 0;
             padding: 0;
         }
 
         .container {
-            flex: 1; /* Grow to fill remaining space */
-            padding: 20px; /* Adjust padding as needed */
-            min-width: 500px; /* Limit container width */
-            margin: 0 auto; /* Center the container horizontally */
+            flex: 1; 
+            padding: 20px; 
+            min-width: 500px; 
+            margin: 0 auto;
         }
 
         footer {
             background-color: #0927D8;
             color: #f8f9fa;
             padding: 20px;
-            width: 97%;
+            width: 100%;
         }
 
         .footer-content {
@@ -147,10 +147,10 @@ $conn->close();
 
     @media only screen and (max-width: 600px) {
         .container {
-                padding: 0 10px;
-            }
-            
-        }
+            padding: 0 10px;
+            margin-top: 300px; 
+        }  
+    }
     </style>
 </head>
 <body>
@@ -166,34 +166,36 @@ $conn->close();
         <a href="logout.php" class="btn">Logout</a>
     </nav>
 </header>
-
-    <h1>Groups</h1>
-
-    <h2>Groups You Are a Member Of:</h2>
-    <?php
-    if ($memberGroupsResult->num_rows > 0) {
-        while ($row = $memberGroupsResult->fetch_assoc()) {
-            echo "<div class='group-container'>";
-            echo "<a href='groupFeed.php?groupID={$row['groupID']}'><strong>{$row['groupname']}</strong></a> - {$row['description']}";
-            echo "</div>";
+    <div class="container">
+        <br>
+        <h1>Groups</h1>
+        <br><br>
+        <h2>Groups You Are a Member Of:</h2>
+        <?php
+        if ($memberGroupsResult->num_rows > 0) {
+            while ($row = $memberGroupsResult->fetch_assoc()) {
+                echo "<div class='group-container'>";
+                echo "<a href='groupFeed.php?groupID={$row['groupID']}'><strong>{$row['groupname']}</strong></a> - {$row['description']}";
+                echo "</div>";
+            }
+        } else {
+            echo "<p>You are not a member of any group.</p>";
         }
-    } else {
-        echo "<p>You are not a member of any group.</p>";
-    }
-    ?>
-
-    <h2>Groups You Are an Admin or Moderator Of:</h2>
-    <?php
-    if ($adminGroupsResult->num_rows > 0) {
-        while ($row = $adminGroupsResult->fetch_assoc()) {
-            echo "<div class='group-container'>";
-            echo "<a href='groupFeed.php?groupID={$row['groupID']}'><strong>{$row['groupname']}</strong></a> - {$row['description']}";
-            echo "</div>";
+        ?>
+        <br><br>
+        <h2>Groups You Are an Admin or Moderator Of:</h2>
+        <?php
+        if ($adminGroupsResult->num_rows > 0) {
+            while ($row = $adminGroupsResult->fetch_assoc()) {
+                echo "<div class='group-container'>";
+                echo "<a href='groupFeed.php?groupID={$row['groupID']}'><strong>{$row['groupname']}</strong></a> - {$row['description']}";
+                echo "</div>";
+            }
+        } else {
+            echo "<p>You are not an admin or moderator of any group.</p>";
         }
-    } else {
-        echo "<p>You are not an admin or moderator of any group.</p>";
-    }
-    ?>
+        ?>
+    </div>
     <footer>
         <div class="footer-content">
             <div class="left-content">

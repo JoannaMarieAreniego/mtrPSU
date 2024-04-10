@@ -1,4 +1,3 @@
-<!-- groupCreate.php -->
 <?php
 require "0conn.php";
 

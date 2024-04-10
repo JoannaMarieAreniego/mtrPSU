@@ -99,7 +99,7 @@ if ($result->num_rows > 0) {
                 <button class="btn <?php echo (gcheckUserLikedPost($row['gpostID'], $currentUserID)) ? 'liked' : ''; ?>" id="likeButton-<?php echo $row['gpostID']; ?>" onclick="glikePost(<?php echo $row['gpostID']; ?>)">
                     <?php echo (gcheckUserLikedPost($row['gpostID'], $currentUserID)) ? 'Dislike' : 'Like'; ?>
                 </button>
-                <button class="btn" onclick="window.location.href='post_details.php?id=<?php echo $row['gpostID']; ?>'">Comment</button>
+                <button class="btn" onclick="window.location.href='group_post_details.php?id=<?php echo $row['gpostID']; ?>'">Comment</button>
             </div>
         </div>
         <?php

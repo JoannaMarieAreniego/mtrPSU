@@ -1,13 +1,30 @@
 <!-- groupCreatePost.php -->
 <?php
+require "0conn.php";
 session_start();
-// Check if groupID is set in the URL
 if (!isset($_GET['groupID'])) {
-    header("Location: groups.php"); // Redirect to groups.php if groupID is not set
+    header("Location: groups.php"); 
     exit;
 }
-// Retrieve groupID from URL parameter
+
+$studID = $_SESSION['studID'];
 $groupID = $_GET['groupID'];
+$getGroupSQL = "SELECT * FROM groups WHERE groupID = '$groupID'";
+$groupResult = $conn->query($getGroupSQL);
+$group = $groupResult->fetch_assoc();
+?>
+
+<?php
+function isModerator($studID, $groupID) {
+    require "0conn.php";
+    
+    $checkModeratorSQL = "SELECT * FROM groupmembers WHERE studID = '$studID' AND groupID = '$groupID' AND is_moderator = '1'";
+    $result = $conn->query($checkModeratorSQL);
+    
+    $conn->close();
+    
+    return $result->num_rows > 0;
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,106 +33,24 @@ $groupID = $_GET['groupID'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="style.css?version=001"> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        * {
+            margin: 0;
 
-* {
-    margin: 0;
+            box-sizing: border-box;
+        }
 
-    box-sizing: border-box;
-}
-
-body { 
-    background-color: #f8f9fa;
-    color: #343a40;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    
-}
-
-header {
-background-color: #0927D8;
-color: #f8f9fa;
-padding: 20px;
-text-align: center;
-position: fixed;
-top: 0;
-width: 100%;
-z-index: 1000;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-
-header h1 {
-font-family: "Old English Text MT", serif;
-font-size: 45px; 
-color: #fff; 
-text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
-margin-bottom: 10px;
-}
-
-
-
-.logo {
-margin-right: auto;
-}
-
-.logo img {
-height: 75px;
-width: auto;
-border-radius: 50%; 
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-transition: transform 0.3s ease; 
-}
-
-.logo img:hover {
-transform: scale(1.1); 
-}
-nav {
-margin-left: auto; 
-}
-.btn {
-display: inline-block;
-padding: 10px 20px;
-background-color: #007bff;
-color: white;
-text-decoration: none;
-border-radius: 50px;
-margin-right: 10px;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
-}
-.btnd {
-    padding: 10px 20px;
-    background-color: #7D0A0A;
-    color: white;
-    border-radius: 50px;
-    margin-right: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-
-nav {
-margin-left: auto;
-display: flex;
-justify-content: flex-end;
-}
-
-.btn.active {
-    background-color: #FFDA27;
-    color: black
-}
-
-.btn:hover {
-    background-color: #0056b3;
-    color: white;
-}
-
-        
+        body { 
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            
+        }
         .container {
             flex: 1; /* Grow to fill remaining space */
             padding: 20px; /* Adjust padding as needed */
@@ -218,7 +153,13 @@ justify-content: flex-end;
     <nav>
         <a href="3newsfeed.php" class="btn">Home</a>
         <a href="groupFeed.php" class="btn">Group Feed</a>
+
         <a href="groupCreatePost.php?groupID=<?php echo $groupID; ?>" class="btn active">Create Post</a>
+        <?php
+            if ($_SESSION['studID'] == $group['created_by'] || isModerator($_SESSION['studID'], $groupID)) {
+                echo '<a href="groupManage.php?groupID=' . $groupID . '" class="btn">Manage Group</a>';
+            }
+        ?>
         <a href="logout.php" class="btn">Logout</a>
     </nav>
 </header>
@@ -259,42 +200,71 @@ justify-content: flex-end;
 
     <script>
     $(document).ready(function(){
-        $('#image1').change(function(){
-            $('#image2Container').show();
-        });
+    $('#image1').change(function(){
+        $('#image2Container').show();
+    });
 
-        $('#image2').change(function(){
-            $('#image3Container').show();
-        });
+    $('#image2').change(function(){
+        $('#image3Container').show();
+    });
 
-        $('#image3').change(function(){
-            $('#image4Container').show();
-        });
+    $('#image3').change(function(){
+        $('#image4Container').show();
+    });
 
-        $('#image4').change(function(){
-            $('#image5Container').show();
-        });
+    $('#image4').change(function(){
+        $('#image5Container').show();
+    });
 
-        $('#postForm').submit(function(event){
-            event.preventDefault();
+    $('#postForm').submit(function(event){
+        event.preventDefault();
 
-            var formData = new FormData(this);
-            formData.append('title', $('#title').val());
-            formData.append('content', $('#content').val());
+        var title = $('#title').val().trim();
+        var content = $('#content').val().trim();
 
-            $.ajax({
-                url: 'groupCreate.php',
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response){
-                    alert(response); 
-                    window.location.href = 'groupFeed.php?groupID=<?php echo $groupID; ?>';
-                }
+        // Check if any required field is empty
+        if (title === '' || content === '') {
+            swal.fire({
+                title: 'Error!',
+                text: 'Please fill in all required fields.',
+                icon: 'error'
             });
+            return; // Prevent form submission
+        }
+
+        var formData = new FormData(this);
+        formData.append('title', title);
+        formData.append('content', content);
+
+        $.ajax({
+            url: 'groupCreate.php',
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response){
+                swal.fire({
+                    title: 'Success!',
+                    text: response,
+                    icon: 'success'
+                }).then(function() {
+                    // Redirect to groupFeed.php
+                    window.location.href = 'groupFeed.php?groupID=<?php echo $groupID; ?>';
+                });
+            },
+            error: function(xhr, status, error) {
+                swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to create post. Please try again later.',
+                    icon: 'error'
+                });
+            }
         });
     });
+});
+
+
+
 </script>
 
 </body>

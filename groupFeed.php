@@ -155,7 +155,7 @@ $conn->close();
 function isModerator($studID, $groupID) {
     require "0conn.php";
     
-    $checkModeratorSQL = "SELECT * FROM groupmembers WHERE studID = '$studID' AND groupID = '$groupID' AND is_moderator = 1";
+    $checkModeratorSQL = "SELECT * FROM groupmembers WHERE studID = '$studID' AND groupID = '$groupID' AND is_moderator = '1'";
     $result = $conn->query($checkModeratorSQL);
     
     $conn->close();
