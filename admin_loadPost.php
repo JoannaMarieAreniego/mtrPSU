@@ -14,14 +14,14 @@ if ($result->num_rows > 0) {
         <div class="post">
             <h2><a href="admin_post_details.php?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
             <p><?php echo $row['content'] ?></p>
-            <div class="image-container">
+            <div class="post-container">
                 <?php 
-                $postImages = array($row['postImage'], $row['postImage2'], $row['postImage3'], $row['postImage4'], $row['postImage5']);
-                foreach($postImages as $image) {
-                    if (!empty($image)) {
-                        echo '<img src="' . $image . '" alt="Post Image" class="post-image">';
-                    }
-                }
+                    
+                 $filePaths = explode(',', $row['file_path']);
+                 foreach ($filePaths as $filePath) {
+                     echo '<img src="' . $filePath . '"  class="post-image">';
+                 }
+
                 ?>
             </div>
             <p class="post-meta">By <?php echo $row['username'] ?> <?php echo formatPostDate($row['created_at']); ?></p>

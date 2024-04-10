@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css?version=002">
     <title>Newsfeed</title>
 
     <style>
@@ -178,9 +178,10 @@ footer {
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
-    <h1>Pangasinan State University</h1>
+    <h1>PSUnian Space</h1>
     <nav>
         <a href="admin_newsfeed.php" class="btn active">Newsfeed</a>
+        <a href="reportedPost.php" class="btn">Reports</a>
         <a href="manageAccount.php" class="btn">Manage Accounts</a>
         <a href="logout.php" class="btn">Logout</a>
 </nav>

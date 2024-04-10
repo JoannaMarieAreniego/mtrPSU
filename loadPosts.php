@@ -28,8 +28,10 @@ FROM posts
 LEFT JOIN users ON posts.studID = users.studID
 LEFT JOIN shared_posts ON posts.postID = shared_posts.postID
 LEFT JOIN users AS sharer ON shared_posts.shared_by_studID = sharer.studID
+WHERE posts.report != 'approved'
 ORDER BY COALESCE(shared_posts.shared_at, posts.created_at) DESC
-LIMIT 10"; // Limiting to 10 posts
+LIMIT 10";
+// Limiting to 10 posts
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -76,12 +78,19 @@ if ($result->num_rows > 0) {
 </button>
 
                 </button>
+                
            
                 <button class="btn" onclick="window.location.href='post_details.php?id=<?php echo $row['postID']; ?>'">Comment</button>
                 <button class="btn" onclick="resharePost(<?php echo $row['postID']; ?>)">Share</button>
                 <button class="btn" onclick="reportPost(<?php echo $row['postID']; ?>)">Report</button>
+                <button class="btn" onclick="savePost(<?php echo $row['postID']; ?>)">Save</button>
             </div>
         </div>
+
+</div>
+
+</div>
+
         <?php
     }
 } else {
@@ -124,6 +133,9 @@ if ($result->num_rows > 0) {
 ?>
 
 <?php
+
+
+
     function checkUserLikedPost($postId, $userId) {
         include("0conn.php");
     
@@ -316,7 +328,20 @@ function toggleCustomReason(checkbox) {
     }
 }
 
-
+function savePost(postID) {
+        $.ajax({
+            url: 'toggleFavorite.php',
+            method: 'POST',
+            data: { postID: postID },
+            success: function(response) {
+                // Display success message or handle response
+                alert(response);
+            },
+            error: function() {
+                alert('An error occurred while saving the post.');
+            }
+        });
+    }
 
 
 
@@ -324,7 +349,6 @@ function toggleCustomReason(checkbox) {
 </script>
 
 <style>
-
 
 
 .swal2-checkbox label {

@@ -26,4 +26,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo 'Invalid request';
 }
+
+ function formatPostDate($postDate) {
+        date_default_timezone_set('Asia/Manila');
+    
+        $currentTime = time();
+        $postTime = strtotime($postDate);
+        $timeDiff = $currentTime - $postTime;
+        
+        if ($timeDiff < 60) {
+            return "a few seconds ago";
+        } elseif ($timeDiff < 3600) {
+            $minutes = floor($timeDiff / 60);
+            return "$minutes minute" . ($minutes > 1 ? "s" : "") . " ago";
+        } elseif ($timeDiff < 86400) {
+            $hours = floor($timeDiff / 3600);
+            return "$hours hour" . ($hours > 1 ? "s" : "") . " ago";
+        } elseif ($timeDiff < 604800) {
+            $days = floor($timeDiff / 86400);
+            return "$days day" . ($days > 1 ? "s" : "") . " ago";
+        } else {
+            $weeks = floor($timeDiff / 604800);
+            if ($weeks < 4) {
+                return "$weeks week" . ($weeks > 1 ? "s" : "") . " ago";
+            } else {
+                $months = floor($weeks / 4);
+                if ($months < 12) {
+                    return "$months month" . ($months > 1 ? "s" : "") . " ago";
+                } else {
+                    $years = floor($months / 12);
+                    return "$years year" . ($years > 1 ? "s" : "") . " ago";
+                }
+            }
+        }
+    }
 ?>

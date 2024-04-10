@@ -12,11 +12,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css?version=002">
 
-    <link href="path/to/bootstrap.min.css" rel="stylesheet">
-<script src="path/to/jquery.min.js"></script>
-<script src="path/to/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 
@@ -114,22 +111,6 @@
         border-radius: 8px;
     }
 
-
-
-    .post-buttons {
-        top: 10px;
-        right: 10px;
-    }
-
-    .post-buttons button {
-        margin-left: 5px;
-        padding: 5px 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-    }
     
 
     @media only screen and (max-width: 600px) {
@@ -149,7 +130,7 @@
     </div>
     <h1>PSUnian Space</h1>
     <nav>
-        <a href="profile.php" class="btn">Profile</a>
+        <a href="userProfile.php" class="btn">Profile</a>
         <a href="3newsfeed.php" class="btn active">Newsfeed</a>
         <a href="createPost.php" class="btn">Create Post</a>
         <a href="groups.php" class="btn">Groups</a>
@@ -268,6 +249,6 @@
             });
         }
     </script>
-    
+   <script src="script.js"></script> 
 </body>
 </html>

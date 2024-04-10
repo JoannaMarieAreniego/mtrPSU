@@ -102,6 +102,53 @@
         .right-content p {
             margin: 0;
         }
+        .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown button */
+.dropbtn {
+  background-color: #3498db;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #2980b9;
+}
 
     @media only screen and (max-width: 600px) {
         .container {
@@ -120,11 +167,19 @@
     <h1>PSUnian Space</h1>
     <nav>
         <a href="admin_newsfeed.php" class="btn">Newsfeed</a>
-        <a href="manageAccount.php" class="btn active">Manage Accounts</a>
+        <div class="dropdown">
+        <a href="reportedPost.php" class="btn active">Reports</a>
+        <div class="dropdown-content">
+        <a href="reportedPost.php">Pending</a>
+        <a href="rejectedPost.php" class="btn active">Rejected</a>
+        <a href="approvedPost.php">Approved</a>
+  </div>
+    </div>
+        <a href="manageAccount.php" class="btn">Manage Accounts</a>
         <a href="logout.php" class="btn">Logout</a>
     </header>
    <div class="container">
-   <h1>User Accounts Management</h1>
+   <h1>Reported Reject Posts Management</h1>
    </div>
 
     <div id="accountsContainer">
@@ -157,7 +212,7 @@
 
         function loadAccounts() {
             $.ajax({
-                url: 'loadAccounts.php',
+                url: 'loadReject.php',
                 method: 'GET',
                 success: function(response) {
                     $('#accountsContainer').html(response);
@@ -165,27 +220,6 @@
             });
         }
 
-        function deleteUser(studID) {
-            if (confirm("Are you sure you want to delete this account?")) {
-                $.ajax({
-                    url: 'deleteAccount.php',
-                    method: 'POST',
-                    data: { studID: studID },
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            loadAccounts();
-                            location.reload();
-                        } else {
-                            alert('Account Deleted Successfully');
-                            location.reload();
-                        }
-                    },
-                    error: function() {
-                        alert('Error occurred while deleting account.');
-                    }
-                });
-            }
-        }
     </script>
 </body>
 </html>

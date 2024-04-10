@@ -50,7 +50,7 @@ margin-bottom: 10px;
 
 
 .logo {
-margin-right: auto;
+margin-right: 50;
 }
 
 .logo img {

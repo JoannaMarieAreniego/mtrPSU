@@ -8,7 +8,7 @@
     <title>Create Group</title>
 </head>
 <body>
-<header>
+<!-- <header>
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
@@ -20,7 +20,7 @@
         <a href="createGroup.php" class="btn active">Create Group</a>
         <a href="logout.php" class="btn">Logout</a>
     </nav>
-</header>
+</header> -->
     <h1>Create Group</h1>
 
     <form id="createGroupForm" method="post" action="createGroupProcess.php">

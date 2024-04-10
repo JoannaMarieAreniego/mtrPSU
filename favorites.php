@@ -1,20 +1,11 @@
 <?php
+
 session_start();
 
 if (!isset($_SESSION['studID'])) {
     header("Location: logintry.php");
     exit;
 }
-
-
-include("0conn.php");
-
-$user_id = $_SESSION['studID'];
-
-$sql = "SELECT * FROM posts WHERE studID = '$user_id' AND report != 'approved' ORDER BY created_at DESC";
-$result = $conn->query($sql);
-
-
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +14,8 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css?version=002">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Profile</title>
 
     <style>    
@@ -220,49 +213,31 @@ footer {
     </nav>
 </header>
 
-<div class="container">
-    <h1>My Posts</h1>
-    <?php
-    if ($result !== false && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            ?>
-             <div class="post" id="post_<?php echo $row['postID'] ?>">
-                <h2><?php echo $row['title'] ?></a></h2>
-                <p><?php echo $row['content'] ?></p>
-                <?php
-                $filePaths = explode(',', $row['file_path']);
-                 foreach ($filePaths as $filePath) {
-                     echo '<img src="' . $filePath . '" class="post-img">';
-                 }
-                 ?>
-                <p class="post-meta">Posted: <?php echo formatPostDate($row['created_at']); ?></p>
+<?php
+include("0conn.php"); // Include your database connection file
 
-                <a href="#" class="btn btn-edit" onclick="editPost(<?php echo $row['postID'] ?>)" >Edit</a>
-                <button class="btn btn-delete" id="deleteBtn_<?php echo $row['postID'] ?>" onclick="deletePost(<?php echo $row['postID'] ?>)">Delete</button>
-            </div>
-            <?php
-        }
-    } else {
-        echo "No posts found.";
-    }
-    ?>
-</div>
-<div class="container">
+session_start();
 
-<?php 
+if (!isset($_SESSION['studID'])) {
+    header("Location: logintry.php");
+    exit;
+}
+
 $user_id = $_SESSION['studID'];
 
 // Query to retrieve shared posts by the current user
-$sql_shared = "SELECT posts.*, shared_posts.shared_at 
-               FROM shared_posts 
-               INNER JOIN posts ON shared_posts.postID = posts.postID 
-               WHERE shared_posts.shared_by_studID = '$user_id' 
-               ORDER BY shared_posts.shared_at DESC";
+$sql = "SELECT posts.*, favorites.fav_created_at
+               FROM favorites 
+               INNER JOIN posts ON favorites.postID = posts.postID 
+               WHERE favorites.studID = '$user_id' 
+               ORDER BY favorites.fav_created_at DESC";
 
-$result_shared = $conn->query($sql_shared);
+$result_shared = $conn->query($sql);
+
 ?>
 
-<h1>My Shared Posts</h1>
+
+<h1>My Favorite Posts</h1>
     <?php
     if ($result_shared !== false && $result_shared->num_rows > 0) {
         while ($row_shared = $result_shared->fetch_assoc()) {
@@ -277,8 +252,8 @@ $result_shared = $conn->query($sql_shared);
                      echo '<img src="' . $filePath . '" class="post-img">';
                  }
                  ?>
-                <p class="post-meta">Shared: <?php echo formatPostDate($row_shared['shared_at']); ?></p>
-                <button class="btn btn-delete" onclick="deleteSharedPost(<?php echo $row_shared['postID'] ?>)">Delete</button>
+                <p class="post-meta">Saved: <?php echo formatPostDate($row_shared['fav_created_at']); ?></p>
+
             </div>
             <?php
         }
@@ -287,6 +262,7 @@ $result_shared = $conn->query($sql_shared);
     }
     ?>
 </div>
+
 
     <footer>
         <div class="footer-content">
@@ -307,94 +283,8 @@ $result_shared = $conn->query($sql_shared);
             <p>Janela Tamayo and Joanna Marie Areniego</p>
         </div>
     </footer>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-<script>
-    function editPost(postId) {
-        window.location.href = "editPost.php?post_id=" + postId;
-    }
-    function deletePost(postId) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'You won\'t be able to revert this!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: 'delete.php',
-                method: 'POST',
-                data: { post_id: postId },
-                success: function(response){
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Deleted!',
-                        text: response,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    $('#post_' + postId).remove();
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: xhr.responseText,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
-            });
-        }
-    });
-}
-
-function deleteSharedPost(postId) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'You will not be able to recover this shared post!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, keep it'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: 'deleteSharedPost.php',
-                method: 'POST',
-                data: { post_id: postId },
-                success: function(response){
-                    Swal.fire(
-                        'Deleted!',
-                        'Your shared post has been deleted.',
-                        'success'
-                    ).then(() => {
-                        $('#post_' + postId).remove();
-                        location.reload();
-                    });
-                }
-            });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire(
-                'Cancelled',
-                'Your shared post is safe :)',
-                'error'
-            );
-        }
-    });
-}
-
-
-</script>
-</body>
-</html>
-
-<?php
+    
+    <?php
     function formatPostDate($postDate) {
         date_default_timezone_set('Asia/Manila');
     
@@ -427,5 +317,4 @@ function deleteSharedPost(postId) {
                 }
             }
         }
-    }
-?>
+    }?>
