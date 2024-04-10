@@ -6,7 +6,7 @@ $result = mysqli_query($conn, $query);
 
 if (mysqli_num_rows($result) > 0) {
     echo "<table>";
-    echo "<tr><th>Report ID</th><th>Post ID</th><th>Reporter ID</th><th>Reason</th><th>report_created_at</th><th>Status</th><th>rejected_at</th><th>action</th></tr>";
+    echo "<tr><th>Report ID</th><th>Post ID</th><th>Reporter ID</th><th>Reason</th><th>report_created_at</th><th>Status</th><th>rejected_at</th></tr>";
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr>";
         echo "<td>" . $row['reportID'] . "</td>";
@@ -16,7 +16,6 @@ if (mysqli_num_rows($result) > 0) {
         echo "<td>" . $row['report_created_at'] . "</td>";
         echo "<td>" . $row['status'] . "</td>";
         echo "<td>" . $row['accepted_date'] . "</td>";
-        echo "<td><button class='btnd'>Accept</button></td>";
 
         echo "</tr>";
     }

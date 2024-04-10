@@ -9,7 +9,7 @@ if (mysqli_num_rows($result) > 0) {
     echo "<tr><th>Post ID</th><th>Reporter ID</th><th>Reason</th><th>report_created_at</th><th>Status</th><th>Action</th></tr>";
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr>";
-        echo "<td>" . $row['postID'] . "</td>";
+        echo "<td><a href='admin_post_details.php?id=" . $row['postID'] . "'>" . $row['postID'] . "</a></td>";
         echo "<td>" . $row['reporterID'] . "</td>";
         echo "<td>" . $row['reason'] . "</td>";
         echo "<td>" . $row['report_created_at'] . "</td>";
