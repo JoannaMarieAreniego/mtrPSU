@@ -32,11 +32,11 @@ if(isset($_GET['post_id'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
+    
     <title>Profile</title>
 
     <style>
-        
-
+       
 .container {
     max-width: 1200px;
     margin: 20px auto;
@@ -146,6 +146,10 @@ if(isset($_GET['post_id'])){
                 padding: 0 10px;
             }
         }
+        .ck-editor__editable[role="textbox"] {
+                /* Editing area */
+                min-height: 250px;
+            }
     </style>
 </head>
 <body>
@@ -167,35 +171,33 @@ if(isset($_GET['post_id'])){
     <?php if(isset($_GET['post_id'])): ?>
         <h1>Edit Post</h1>
         <form id="updateForm">
+            <input type="hidden" name="post_id" value="<?php echo $post_id ?>">
             <label for="title">Title:</label><br>
             <input type="text" id="title" name="title" value="<?php echo $title ?>"><br><br>
             <label for="content">Content:</label><br>
             <textarea id="content" name="content" rows="4" cols="50"><?php echo isset($content) ? $content : ''; ?></textarea><br><br>
-            <button type="submit" id="updateButton" name="update">Update Post</button>
+            <input type="submit" id="updateButton" name="update" value="Update Post">
         </form>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             $(document).ready(function() {
-                $("#updateButton").click(function() {
-                    if (confirm("Are you sure you want to update this post?")) {
-                        var formData = $("#updateForm").serialize();
-                        $.ajax({
-    type: "POST",
-    url: 'update.php',
-    data: {
-        post_id: <?php echo $_GET['post_id']; ?>,
-        title: $("#title").val(),
-        content: $("#content").val()
-    },
-    success: function(response) {
-        alert("Post updated successfully.");
-        window.location.href = "profile.php";
-    },
-    error: function(xhr, status, error) {
-        alert("Error updating post: " + xhr.responseText);
-    }
-});
+                $("#updateForm").submit(function(event) {
+                    event.preventDefault(); // Prevent the form from submitting normally
 
+                    if (confirm("Are you sure you want to update this post?")) {
+                        var formData = $(this).serialize();
+                        $.ajax({
+                            type: "POST",
+                            url: 'update.php',
+                            data: formData,
+                            success: function(response) {
+                                alert("Post updated successfully.");
+                                window.location.href = "profile.php";
+                            },
+                            error: function(xhr, status, error) {
+                                alert("Error updating post: " + xhr.responseText);
+                            }
+                        });
                     }
                 });
             });
@@ -204,8 +206,8 @@ if(isset($_GET['post_id'])){
     <?php endif; ?>
 </div>
 
-    <footer>
-        <div class="footer-content">
+<footer>
+<div class="footer-content">
             <div class="left-content">
                 <p>Pangasinan State University</p>
             </div>
@@ -222,8 +224,16 @@ if(isset($_GET['post_id'])){
         <div class="names">
             <p>Janela Tamayo and Joanna Marie Areniego</p>
         </div>
-    </footer>
-
+</footer>
 
 </body>
 </html>
+</script>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create( document.querySelector( '#content' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>

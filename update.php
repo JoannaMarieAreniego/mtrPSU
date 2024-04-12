@@ -15,12 +15,17 @@ if(isset($_POST['post_id']) && isset($_POST['title']) && isset($_POST['content']
     $title = $_POST['title'];
     $content = $_POST['content'];
 
-    $sql_update = "UPDATE posts SET title = '$title', content = '$content' WHERE postID = '$post_id' AND studID = '$user_id'";
-    if ($conn->query($sql_update) === TRUE) {
+    // Prepare and bind parameters to prevent SQL injection
+    $stmt = $conn->prepare("UPDATE posts SET title = ?, content = ? WHERE postID = ? AND studID = ?");
+    $stmt->bind_param("ssii", $title, $content, $post_id, $user_id);
+
+    if ($stmt->execute()) {
         echo "Post updated successfully.";
     } else {
-        echo "Error updating post: " . $conn->error;
+        echo "Error updating post: " . $stmt->error;
     }
+
+    $stmt->close();
 } else {
     echo "Missing post_id, title, or content data.";
 }

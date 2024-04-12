@@ -249,21 +249,7 @@ justify-content: flex-end;
 
     <script>
     $(document).ready(function(){
-        $('#image1').change(function(){
-            $('#image2Container').show();
-        });
 
-        $('#image2').change(function(){
-            $('#image3Container').show();
-        });
-
-        $('#image3').change(function(){
-            $('#image4Container').show();
-        });
-
-        $('#image4').change(function(){
-            $('#image5Container').show();
-        });
 
         $('#postForm').submit(function(event){
     event.preventDefault();
@@ -307,9 +293,6 @@ justify-content: flex-end;
 
     });
 </script>
-
-</body>
-</html>
 <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 <script>
     ClassicEditor
@@ -318,4 +301,7 @@ justify-content: flex-end;
             console.error( error );
         } );
 </script>
+</body>
+</html>
+
 

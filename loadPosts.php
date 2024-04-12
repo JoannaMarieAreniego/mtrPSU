@@ -1,4 +1,3 @@
-<!-- loadPosts.php -->
 <style>
 .post-buttons .btn  {
 display: inline-block;
@@ -15,6 +14,12 @@ text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     background-color: yellow;
     color: #333;
 }
+.comD {
+    background-color: white;
+    margin: 10px; /* Adjust the margin as needed */
+    padding: 10px; /* Adjust the padding as needed */
+}
+
 
 </style>
 <?php
@@ -38,10 +43,15 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         ?>
         <div class="post" data-post-id="<?php echo $row['postID']; ?>">
-            <h2><a href="post_details.php?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
-            <?php if (!empty($row['shared_by_studID'])): ?>
+        <h3><a href="visitProfile.php?userID=<?php echo $row['studID']; ?>"><?php echo $row['poster_username']; ?></a></h3>
+
+
+        <h3><?php echo formatPostDate($row['created_at']); ?></h3> <br>
+        <?php if (!empty($row['shared_by_studID'])): ?>
                 <p><em>Shared by <?php echo $row['shared_by_username']; ?>  <?php echo formatSharedDate($row['shared_at']); ?></em></p>
             <?php endif; ?>
+            <h2><a href="post_details.php?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
+           
             <p><?php echo $row['content'] ?></p>
             <div class="post-container">
                 <?php 
@@ -53,7 +63,7 @@ if ($result->num_rows > 0) {
 
                 ?>
             </div>
-            <p class="post-meta">By <?php echo $row['poster_username'] ?> <?php echo formatPostDate($row['created_at']); ?></p>
+          
             <div class="post-buttons">
                 <div class="like-info" id="likeInfo-<?php echo $row['postID']; ?>" style="cursor: pointer;" onclick="showAllLikers(<?php echo $row['postID']; ?>)">
                     <?php
@@ -74,18 +84,24 @@ if ($result->num_rows > 0) {
                 </div>
                 <br> <br>
                 <button class="btn <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? 'liked' : ''; ?>" id="likeButton-<?php echo $row['postID']; ?>" onclick="likePost(<?php echo $row['postID']; ?>)">
-    <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? 'Dislike' : 'Like'; ?>
+                <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? $likeCount  . " " . 'Liked' :  'Like'; ?>
 </button>
 
                 </button>
                 
            
-                <button class="btn" onclick="window.location.href='post_details.php?id=<?php echo $row['postID']; ?>'">Comment</button>
+              
+                <button class="btn" onclick="toggleDiv(<?php echo $row['postID']; ?>)">Comment</button>
                 <button class="btn" onclick="resharePost(<?php echo $row['postID']; ?>)">Share</button>
                 <button class="btn" onclick="reportPost(<?php echo $row['postID']; ?>)">Report</button>
                 <button class="btn" onclick="savePost(<?php echo $row['postID']; ?>)">Save</button>
             </div>
+            <div class="comD" id="myDiv-<?php echo $row['postID']; ?>">
+    <!-- Content for myDiv -->
+</div>
+
         </div>
+        
 
 </div>
 
@@ -342,6 +358,23 @@ function savePost(postID) {
             }
         });
     }
+    function toggleDiv(postID) {
+    var div = document.getElementById("myDiv-" + postID);
+    if (div.style.display === "none") {
+        div.style.display = "block";
+        fetch('fetch_data(TRY).php?id=' + postID) // Pass postID as a query parameter
+        .then(response => response.text())
+        .then(data => {
+            div.innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    } else {
+        div.style.display = "none";
+    }
+}
+
 
 
 
@@ -391,5 +424,3 @@ function savePost(postID) {
     a {
         text-decoration: none;
     }
-    
-</style>

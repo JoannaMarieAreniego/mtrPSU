@@ -218,12 +218,14 @@
             data: { postID: postID, isLiked: isLiked ? 0 : 1 },
             success: function(response) {
                 console.log(response);
-                if (isLiked) {
-                    likeButton.removeClass('liked').text('Like');
-                } else {
-                    likeButton.addClass('liked').text('Liked');
-                }
+                // if (isLiked) {
+                //     // likeButton.removeClass('liked').text('Like');
+                // } else {
+                //     // likeButton.addClass('liked').text('Liked');
+                // }
                 updateLikeInfo(postID);
+                location.reload();
+
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
