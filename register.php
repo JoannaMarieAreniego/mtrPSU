@@ -294,13 +294,29 @@
                 <h4>Username</h4>
                 <input type="text" id="username" name="username" placeholder="Enter Username" onfocusout="validateUserForm();">
                 <span id="username_error" class="error-message"></span><br>
-   
-
-    </div>
+                <h4>Short Bio</h4>
+                <input type="text" id="bio" name="bio" placeholder="Enter Bio" onfocusout="validateUserForm();">
+                <span id="bio_error" class="error-message"></span><br>
+                <h4>Course</h4>
+                <select id="course" name="course">
+                    <option value="">Select Course</option>
+                    <option value="Bachelor of Arts in English Language">Bachelor of Arts in English Language</option>
+                    <option value="Bachelor of Early Childhood Education">Bachelor of Early Childhood Education</option>
+                    <option value="Bachelor of Secondary Education">Bachelor of Secondary Education</option>
+                    <option value="Bachelor of Science in Architecture">Bachelor of Science in Architecture</option>
+                    <option value="Bachelor of Science in Civil Engineering">Bachelor of Science in Civil Engineering</option>
+                    <option value="Bachelor of Science in Computer Engineering">Bachelor of Science in Computer Engineering</option>
+                    <option value="Bachelor of Science in Electrical Engineering">Bachelor of Science in Electrical Engineering</option>
+                    <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+                    <option value="Bachelor of Science in Mathematics">Bachelor of Science in Mathematics</option>
+                    <option value=""></option>
+                </select>
+                <span id="course_error" class="error-message"></span><br>
+            </div>
     <div class="form2">
                 <h4>Institutional Email</h4>
                 <input type="email" id="email" name="email" placeholder="ex. 22UR0776@psu.edu.ph"  required>
-                <!-- <span id="password_error" class="error-message"></span><br> -->
+                <span id="email_error" class="error-message"></span><br>
                 <h4>Password</h4>
                 <input type="password" id="password" name="password" placeholder="Enter Password"  required>
                 <span id="password_error" class="error-message"></span><br>

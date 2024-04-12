@@ -10,11 +10,14 @@ function validateUserForm(){
     var username  = $('#username').val();
     var password = $('#password').val();
     var confirmpass = $('#confirmpass').val();
+    var email = $('#email').val();
+    var bio = $('#bio').val();
+    var course = $('#course').val();
     
     checkingUser = true;
     userErrorCount = 0;
-    $('#firstname_error, #lastname_error, #studID_error, #username_error, #password_error, #confirmpass_error').html('');
-    $('#firstname, #lastname, #studID, #username, #password, #confirmpass').css("border", "1px solid black"); 
+    $('#firstname_error, #lastname_error, #studID_error, #username_error, #password_error, #confirmpass_error, #email_error, #bio_error, #course_error').html('');
+    $('#firstname, #lastname, #studID, #username, #password, #confirmpass, #email, #bio, #course').css("border", "1px solid black"); 
 
     if (firstname == ""){
         $('#firstname_error').html('First Name is required');
@@ -55,6 +58,21 @@ function validateUserForm(){
 		$('#confirmpass').css("border", "1px solid red");
 		userErrorCount++;
 	}
+    if (email == ""){
+		$('#email_error').html('Email is required');
+		$('#email').css("border", "1px solid red"); 
+		userErrorCount++;
+	}
+    if (bio == ""){
+		$('#bio_error').html('Bio is required');
+		$('#bio').css("border", "1px solid red"); 
+		userErrorCount++;
+	}
+    if (course == ""){
+		$('#course_error').html('Course is required');
+		$('#course').css("border", "1px solid red"); 
+		userErrorCount++;
+	}
 	return userErrorCount === 0;
 }
 
@@ -76,7 +94,7 @@ function addUser() {
             
             if (response.status === "success") {
                 console.log("User added successfully!");
-                $('#studID, #username, #password, #confirmpass').val('');
+                $('#studID, #username, #password, #confirmpass, #email, #bio, #course').val('');
                 alert("User added successfully!");
                 window.location.href = "logintry.php";
 
