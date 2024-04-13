@@ -300,7 +300,7 @@
     <div class="form2">
                 <h4>Institutional Email</h4>
                 <input type="email" id="email" name="email" placeholder="ex. 22UR0776@psu.edu.ph"  required>
-                <!-- <span id="password_error" class="error-message"></span><br> -->
+                <span id="password_error" class="error-message"></span><br>
                 <h4>Password</h4>
                 <input type="password" id="password" name="password" placeholder="Enter Password"  required>
                 <span id="password_error" class="error-message"></span><br>
