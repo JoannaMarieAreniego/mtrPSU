@@ -316,7 +316,11 @@
     <div class="form2">
                 <h4>Institutional Email</h4>
                 <input type="email" id="email" name="email" placeholder="ex. 22UR0776@psu.edu.ph"  required>
+<<<<<<< HEAD
+                <span id="password_error" class="error-message"></span><br>
+=======
                 <span id="email_error" class="error-message"></span><br>
+>>>>>>> f26fbe6faf049bad65506b8dda7b43a5fae859e4
                 <h4>Password</h4>
                 <input type="password" id="password" name="password" placeholder="Enter Password"  required>
                 <span id="password_error" class="error-message"></span><br>
