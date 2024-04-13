@@ -41,6 +41,17 @@ if ($registeredUsersResult->num_rows > 0) {
   }
 }
 
+// Fetching data for Pie Chart (Users by Course)
+$usersByCourseData = [];
+$usersByCourseQuery = "SELECT course, COUNT(*) AS count FROM users WHERE studID != 'admin' GROUP BY course";
+$usersByCourseResult = $conn->query($usersByCourseQuery);
+
+if ($usersByCourseResult->num_rows > 0) {
+    while ($row = $usersByCourseResult->fetch_assoc()) {
+        $usersByCourseData[] = [$row['course'], (int)$row['count']];
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -132,6 +143,30 @@ if ($registeredUsersResult->num_rows > 0) {
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('linechart'));
+            chart.draw(data, options);
+        }
+
+        google.charts.setOnLoadCallback(drawChart4);
+
+        function drawChart4() {
+            var usersByCourseData = <?php echo json_encode($usersByCourseData); ?>;
+            var data = google.visualization.arrayToDataTable([
+                ['Course', 'Number of Users'],
+                <?php
+                foreach ($usersByCourseData as $data) {
+                    echo "['" . $data[0] . "', " . $data[1] . "],";
+                }
+                ?>
+            ]);
+
+            var options = {
+                title: 'Users by Course',
+                backgroundColor: '#f8f9fa',
+                titleTextStyle: { color: '#343a40', fontSize: 24 },
+                legendTextStyle: { color: '#343a40' },
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart3'));
             chart.draw(data, options);
         }
 
@@ -307,6 +342,10 @@ if ($registeredUsersResult->num_rows > 0) {
         <main class="content">
             <div class="content-container">
                 <div class="analytics-card">
+                    <div class="analytics-card">
+                        <h1>Registered Users Over Time</h1>
+                        <div id="linechart"></div>
+                    </div>
                     <h1>Report Data Analytics</h1>
                     <div class="piechart-container">
                         <div id="piechart"></div>
@@ -314,10 +353,10 @@ if ($registeredUsersResult->num_rows > 0) {
                     <div class="piechart-container">
                         <div id="piechart2"></div>
                     </div>
-                    <div class="analytics-card">
-                        <h1>Registered Users Over Time</h1>
-                        <div id="linechart"></div>
+                    <div class="piechart-container">
+                        <div id="piechart3"></div>
                     </div>
+                    <br><br>
                 </div>
             </div>
         </main>
