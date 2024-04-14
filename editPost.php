@@ -192,7 +192,7 @@ if(isset($_GET['post_id'])){
                             data: formData,
                             success: function(response) {
                                 alert("Post updated successfully.");
-                                window.location.href = "profile.php";
+                                window.location.href = "userProfile.php";
                             },
                             error: function(xhr, status, error) {
                                 alert("Error updating post: " + xhr.responseText);

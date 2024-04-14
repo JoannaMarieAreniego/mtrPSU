@@ -31,7 +31,7 @@
         padding: 8px;
     }
 
-    tr:hover {background-color: #007bff;}
+    tr:hover {background-color: #DDDDDD;}
 
     .delete-btn {
         background-color: #f44336;

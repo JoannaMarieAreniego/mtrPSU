@@ -26,6 +26,8 @@ if(isset($_GET['userID'])) {
                      WHERE posts.studID = '$userID' AND posts.report != 'approved'
                      ORDER BY COALESCE(shared_posts.shared_at, posts.created_at) DESC";
         $postsResult = $conn->query($postsSql);
+
+        
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,86 +42,10 @@ if(isset($_GET['userID'])) {
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
     <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css?version=002" />
+    <link rel="stylesheet" href="css/style.css?version=003" />
+    <link rel="stylesheet" href="style.css?versiom=003">
     <style>
-        body { 
-    background-color: #f8f9fa;
-    color: #343a40;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    
-}
-
-header {
-background-color: #0927D8;
-color: #f8f9fa;
-padding: 20px;
-text-align: center;
-position: fixed;
-top: 0;
-width: 100%;
-z-index: 1000;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-
-header h1 {
-font-family: "Old English Text MT", serif;
-font-size: 45px; 
-color: #fff; 
-text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
-margin-bottom: 10px;
-
-}
-
-
-
-.logo {
-margin-right: 50;
-}
-
-.logo img {
-height: 75px;
-width: auto;
-border-radius: 50%; 
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-transition: transform 0.3s ease; 
-}
-
-.logo img:hover {
-transform: scale(1.1); 
-}
-
-
-nav {
-margin-left: auto; 
-}
-
-footer {
-    background-color: #0927D8;
-    color: #f8f9fa;
-    text-align: center;
-    padding: 20px;
-    margin-top: 20px;
- 
-    left: 0;
-    bottom: 0;
-    width: 100%;
-}
-
-.btn {
-display: inline-block;
-padding: 10px 20px;
-background-color: #007bff;
-color: white;
-text-decoration: none;
-border-radius: 50px;
-margin-right: 15px;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
-}
+       
 
 .dropdown {
   position: relative;
@@ -168,7 +94,6 @@ text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 .dropdown:hover .dropbtn {
   background-color: #2980b9;
 }
-
 .post {
             background-color: #fff;
             border-radius: 8px;
@@ -199,6 +124,37 @@ text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     object-fit: cover; /* Optional: maintain aspect ratio and crop if necessary */
 }
+footer {
+            background-color: #0927D8;
+            color: #f8f9fa;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .names {
+            text-align: center;
+        }
+
+        .left-content {
+            flex: 1;
+            text-align: left; /* Align content to the left */
+        }
+
+        .right-content {
+            text-align: right; /* Align content to the right */
+        }
+
+        .left-content p,
+        .right-content p {
+            margin: 0;
+        }
+
 
     </style>
   </head>
@@ -232,28 +188,24 @@ text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             <img src="img/user.jpeg" alt="Anna Smith" />
             <span></span>
           </div>
-          <h2><?php echo $row['firstname'] . $row['lastname']  ?></h2>
-          <p>UX/UI Designer</p>
-          <p>anna@example.com</p>
+          <h2><?php echo $row['firstname'] . " " . $row['lastname']  ?></h2>
+          <p><?php echo $row['course'] ?> </p>
+          <p><?php echo $row['email'] ?></p>
 
           <ul class="about">
-            <li><span>4,073</span>Followers</li>
-            <li><span>322</span>Following</li>
-            <li><span>200,543</span>Attraction</li>
+            
           </ul>
 
           <div class="content">
             <p>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam
-              erat volutpat. Morbi imperdiet, mauris ac auctor dictum, nisl
-              ligula egestas nulla.
+              <?php echo $row['bio'] ?> 
             </p>
 
             <ul>
-              <li><i class="fab fa-twitter"></i></li>
+              <!-- <li><i class="fab fa-twitter"></i></li>
               <i class="fab fa-pinterest"></i>
               <i class="fab fa-facebook"></i>
-              <i class="fab fa-dribbble"></i>
+              <i class="fab fa-dribbble"></i> -->
             </ul>
           </div>
         </div>
@@ -306,5 +258,25 @@ text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         </div>
       </div>
     </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="left-content">
+                <p>Pangasinan State University</p>
+            </div>
+            <div class="right-content">
+                <p id="copyright"></p>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var currentYear = new Date().getFullYear();
+                        document.getElementById('copyright').innerText = '© ' + currentYear + ' PSUnian Space';
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="names">
+            <p>Janela Tamayo and Joanna Marie Areniego</p>
+        </div>
+    </footer>
   </body>
 </html>

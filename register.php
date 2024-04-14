@@ -106,10 +106,10 @@
         }
         .form {
             width: 230px;
-            height: 550px;
+            height: 650px;
             background: linear-gradient(to top, rgba(0,0,0,0.5)50%, rgba(0,0,0,0.5)50%);
             position: absolute;
-            top: -20px;
+            top: -55px;
             bottom: -20px;
             left: 660px;
             border-radius: 10px;
@@ -118,10 +118,10 @@
         .form2 {
             
             width: 250px;
-            height: 550px;
+            height: 650px;
             background: linear-gradient(to top, rgba(0,0,0,0.5)50%, rgba(0,0,0,0.5)50%);
             position: absolute;
-            top: -20px;
+            top: -55px;
             bottom: -20px;
             left: 950px;
             border-radius: 10px;
@@ -262,6 +262,41 @@
             display: block;
         }
 
+        select {
+            width: 250px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            appearance: none; /* Remove default arrow */
+            -webkit-appearance: none; /* Remove default arrow in Safari */
+            -moz-appearance: none; /* Remove default arrow in Firefox */
+            background-color: white;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Custom arrow */
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+
+        select:hover {
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #007bff; /* Custom focus color */
+        }
+
+        select option {
+            padding: 10px;
+        }
+
+        /* Custom dropdown list height */
+        select.size-5 {
+            height: 150px; /* Adjust height as needed */
+            overflow-y: auto; /* Add scrollbar if content exceeds height */
+        }
+
+
     </style>
 </head>
 <body>
@@ -297,8 +332,11 @@
                 <h4>Short Bio</h4>
                 <input type="text" id="bio" name="bio" placeholder="Enter Bio" onfocusout="validateUserForm();">
                 <span id="bio_error" class="error-message"></span><br>
-                <h4>Course</h4>
-                <select id="course" name="course">
+                
+            </div>
+    <div class="form2">
+    <h4>Course</h4>
+                <select id="course" name="course" class="course">
                     <option value="">Select Course</option>
                     <option value="Bachelor of Arts in English Language">Bachelor of Arts in English Language</option>
                     <option value="Bachelor of Early Childhood Education">Bachelor of Early Childhood Education</option>
@@ -312,15 +350,9 @@
                     <option value=""></option>
                 </select>
                 <span id="course_error" class="error-message"></span><br>
-            </div>
-    <div class="form2">
                 <h4>Institutional Email</h4>
                 <input type="email" id="email" name="email" placeholder="ex. 22UR0776@psu.edu.ph"  required>
-<<<<<<< HEAD
-                <span id="password_error" class="error-message"></span><br>
-=======
                 <span id="email_error" class="error-message"></span><br>
->>>>>>> f26fbe6faf049bad65506b8dda7b43a5fae859e4
                 <h4>Password</h4>
                 <input type="password" id="password" name="password" placeholder="Enter Password"  required>
                 <span id="password_error" class="error-message"></span><br>

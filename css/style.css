@@ -27,15 +27,17 @@ a {
 .header__wrapper .h {
   width: 100%;
   /* background: url("../img/bg.jpeg") no-repeat 50% 20% / cover; */
-  min-height: calc(100px + 10vw);
+  align-self: right;
+  min-height: calc(100px + 3vw);
 }
 
 .header__wrapper .cols__container .left__col {
-  padding: 25px 20px;
+  padding: 55px;
   text-align: center;
   max-width: 350px;
   position: relative;
-  margin: 0 auto;
+  margin: 100px auto 0;
+  
 }
 
 
@@ -44,8 +46,10 @@ a {
   position: absolute;
   top: -60px;
   left: 50%;
-  transform: translatex(-50%);
+  transform: translate(-50%, 60%);
+  margin-top: 50px;
 }
+
 .header__wrapper .cols__container .left__col .img__container img {
   width: 120px;
   height: 120px;
@@ -53,22 +57,15 @@ a {
   border-radius: 50%;
   display: block;
   box-shadow: 1px 3px 12px rgba(0, 0, 0, 0.18);
+ 
 }
-.header__wrapper .cols__container .left__col .img__container span {
-  position: absolute;
-  background: #2afa6a;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  bottom: 3px;
-  right: 11px;
-  border: 2px solid #fff;
-}
+
 .header__wrapper .cols__container .left__col h2 {
   margin-top: 60px;
   font-weight: 600;
   font-size: 22px;
-  margin-bottom: 5px;
+  padding-top: 100px;
+
 }
 .header__wrapper .cols__container .left__col p {
   font-size: 0.9rem;
@@ -142,18 +139,7 @@ a {
   color: #1d1d1d;
   font-weight: 600;
 }
-.header__wrapper .cols__container .right__col nav button {
-  background: #0091ff;
-  color: #fff;
-  border: none;
-  padding: 10px 25px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-.header__wrapper .cols__container .right__col nav button:hover {
-  opacity: 0.8;
-}
+
 .header__wrapper .cols__container .right__col .photos {
   min-height: 500px;
   /* display: grid; */
@@ -187,7 +173,8 @@ a {
     gap: 30px;
   }
   .header__wrapper .cols__container .right__col .photos {
-    height: 365px;
+    /* background-color: yellow; */
+    height: 480px;
     overflow: auto;
     padding: 0 0 30px;
   }
@@ -201,7 +188,5 @@ a {
   .header__wrapper .cols__container .right__col nav {
     flex-direction: row;
   }
-  .header__wrapper .cols__container .right__col nav button {
-    margin-top: 0;
-  }
+
 }

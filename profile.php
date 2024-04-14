@@ -11,142 +11,31 @@ include("0conn.php");
 
 $user_id = $_SESSION['studID'];
 
-$sql = "SELECT * FROM posts WHERE studID = '$user_id' AND report != 'approved' ORDER BY created_at DESC";
-$result = $conn->query($sql);
+$sqls = "SELECT * FROM posts WHERE studID = '$user_id' AND report != 'approved' ORDER BY created_at DESC";
+$results = $conn->query($sqls);
 
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css?version=002">
-    <title>Profile</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>Responsive Profile Page</title>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css?version=004" />
+    <link rel="stylesheet" href="style.css?version=004">
+    <style>
+       
 
-    <style>    
-   body {
-    background-color: #f8f9fa;
-    color: #343a40;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-}
-
-.container {
-    padding: 20px;
-    min-width: 1200px;
-    margin: 0 auto;
-}
-
-footer {
-            background-color: #0927D8;
-            color: #f8f9fa;
-            padding: 20px;
-            width: 100%;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .names {
-            text-align: center;
-        }
-
-        .left-content {
-            flex: 1;
-            text-align: left; /* Align content to the left */
-        }
-
-        .right-content {
-            text-align: right; /* Align content to the right */
-        }
-
-        .left-content p,
-        .right-content p {
-            margin: 0;
-        }
-
-
-        .container {
-            max-width: 1100px;
-            margin: 120px auto 20px;
-            padding: 0 20px;
-        }
-
-        .post {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            padding: 20px;
-            position: relative;
-        }
-
-        .post h2 {
-            margin-bottom: 10px;
-        color: #007bff;
-        cursor: pointer;
-        }
-
-        .post p {
-            margin-bottom: 15px;
-        }
-
-        .post-meta {
-            color: #6c757d;
-            font-size: 0.8rem;
-        }
-      .btn-delete {
-     
-            font-size: 14px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1;
-            background-color: #7D0A0A;
-        }
-
-        .btn-edit {
-            position: absolute;
-            top: 10px;
-            right: 120px;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .container {
-                padding: 0 10px;
-            }
-        }
-        .post-img {
-            max-width: 100%;
-        height: 200px;
-        object-fit: cover; 
-        border-radius: 8px;
-        }
-
-        .post-buttons {
-        top: 10px;
-        right: 10px;
-    }
-
-    .post-buttons button {
-        margin-left: 5px;
-        padding: 5px 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    .dropdown {
+.dropdown {
   position: relative;
   display: inline-block;
 }
@@ -193,13 +82,73 @@ footer {
 .dropdown:hover .dropbtn {
   background-color: #2980b9;
 }
+.post {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .post h2 {
+            margin-bottom: 10px;
+        color: #007bff;
+        cursor: pointer;
+        }
+
+        .post p {
+            margin-bottom: 15px;
+        }
+
+        .post-meta {
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+       
+        .post-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover; /* Optional: maintain aspect ratio and crop if necessary */
+}
+footer {
+            background-color: #0927D8;
+            color: #f8f9fa;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .names {
+            text-align: center;
+        }
+
+        .left-content {
+            flex: 1;
+            text-align: left; /* Align content to the left */
+        }
+
+        .right-content {
+            text-align: right; /* Align content to the right */
+        }
+
+        .left-content p,
+        .right-content p {
+            margin: 0;
+        }
+
 
     </style>
-</head>
-<body>
+  </head>
+  <body>
 
-
-<header>
+  <header>
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
@@ -219,55 +168,86 @@ footer {
         <a href="logout.php" class="btn">Logout</a>
     </nav>
 </header>
+    <div class="header__wrapper">
+    <div class="h"></div>
+      <div class="cols__container">
+        <div class="left__col">
+          <div class="img__container">
+            <img src="img/user.jpeg" alt="Anna Smith" />
+            <span></span>
+          </div>
+          <?php
 
-<div class="container">
-    <h1>My Posts</h1>
-    <?php
-    if ($result !== false && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            ?>
-             <div class="post" id="post_<?php echo $row['postID'] ?>">
-                <h2><?php echo $row['title'] ?></a></h2>
-                <p><?php echo $row['content'] ?></p>
-                <?php
-                $filePaths = explode(',', $row['file_path']);
-                 foreach ($filePaths as $filePath) {
-                     echo '<img src="' . $filePath . '" class="post-img">';
-                 }
-                 ?>
-                <p class="post-meta">Posted: <?php echo formatPostDate($row['created_at']); ?></p>
 
-                <a href="#" class="btn btn-edit" onclick="editPost(<?php echo $row['postID'] ?>)" >Edit</a>
-                <button class="btn btn-delete" id="deleteBtn_<?php echo $row['postID'] ?>" onclick="deletePost(<?php echo $row['postID'] ?>)">Delete</button>
-            </div>
-            <?php
-        }
-    } else {
-        echo "No posts found.";
-    }
-    ?>
-</div>
-<div class="container">
+$user_id = $_SESSION['studID'];
 
-<?php 
+$sql = "SELECT * FROM users WHERE studID = '$user_id'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc(); // Fetch the row as an associative array
+    $fname = $row['firstname'];
+    $lname = $row['lastname'];
+    $username = $row['username'];
+    $password = $row['password'];
+    $email = $row['email'];
+    $course = $row['course'];
+    $bio = $row['bio']; // Access the username property from the array
+} else {
+    // Handle the case when no rows are returned
+    // You might want to display an error message or redirect the user
+}
+
+?>
+
+          <h2><?php echo $fname . " " . $lname  ?></h2>
+          <p><?php echo $course ?> </p>
+          <p><?php echo $email ?></p>
+
+          <ul class="about">
+            
+          </ul>
+
+          <div class="content">
+            <p>
+              <?php echo $bio ?> 
+            </p>
+
+            <ul>
+              <!-- <li><i class="fab fa-twitter"></i></li>
+              <i class="fab fa-pinterest"></i>
+              <i class="fab fa-facebook"></i>
+              <i class="fab fa-dribbble"></i> -->
+            </ul>
+          </div>
+        </div>
+        <div class="right__col">
+       
+
+          <div class="photos">
+          <div class="container">
+          <h1>My Shared Posts</h1>
+
+          <?php 
 $user_id = $_SESSION['studID'];
 
 // Query to retrieve shared posts by the current user
-$sql_shared = "SELECT posts.*, shared_posts.shared_at 
+$sql_shared = "SELECT posts.*, shared_posts.shared_at, users.username AS shared_from_username
                FROM shared_posts 
-               INNER JOIN posts ON shared_posts.postID = posts.postID 
+               INNER JOIN posts ON shared_posts.postID = posts.postID
+               INNER JOIN users ON shared_posts.shared_from_studID = users.studID
                WHERE shared_posts.shared_by_studID = '$user_id' 
                ORDER BY shared_posts.shared_at DESC";
 
 $result_shared = $conn->query($sql_shared);
 ?>
-
-<h1>My Shared Posts</h1>
-    <?php
+          <?php
     if ($result_shared !== false && $result_shared->num_rows > 0) {
         while ($row_shared = $result_shared->fetch_assoc()) {
             ?>
             <div class="post" id="post_<?php echo $row_shared['postID'] ?>">
+                <h3><?php echo $row_shared['shared_from_username'] ?></h3>
+                <h3><?php echo formatPostDate($row_shared['created_at']) ?></h3>
                 <h2><?php echo $row_shared['title'] ?></h2>
                 <p><?php echo $row_shared['content'] ?></p>
 
@@ -287,6 +267,10 @@ $result_shared = $conn->query($sql_shared);
     }
     ?>
 </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <footer>
         <div class="footer-content">
@@ -307,53 +291,9 @@ $result_shared = $conn->query($sql_shared);
             <p>Janela Tamayo and Joanna Marie Areniego</p>
         </div>
     </footer>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-<script>
-    function editPost(postId) {
-        window.location.href = "editPost.php?post_id=" + postId;
-    }
-    function deletePost(postId) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'You won\'t be able to revert this!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: 'delete.php',
-                method: 'POST',
-                data: { post_id: postId },
-                success: function(response){
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Deleted!',
-                        text: response,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    $('#post_' + postId).remove();
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: xhr.responseText,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
-            });
-        }
-    });
-}
-
+    <script>
 function deleteSharedPost(postId) {
     Swal.fire({
         title: 'Are you sure?',
@@ -391,9 +331,8 @@ function deleteSharedPost(postId) {
 
 
 </script>
-</body>
+  </body>
 </html>
-
 <?php
     function formatPostDate($postDate) {
         date_default_timezone_set('Asia/Manila');
@@ -429,3 +368,4 @@ function deleteSharedPost(postId) {
         }
     }
 ?>
+

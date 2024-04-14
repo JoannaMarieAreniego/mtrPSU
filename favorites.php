@@ -1,145 +1,41 @@
 <?php
-
 session_start();
 
 if (!isset($_SESSION['studID'])) {
     header("Location: logintry.php");
     exit;
 }
-?>
 
+
+include("0conn.php");
+
+$user_id = $_SESSION['studID'];
+
+$sqls = "SELECT * FROM posts WHERE studID = '$user_id' AND report != 'approved' ORDER BY created_at DESC";
+$results = $conn->query($sqls);
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css?version=002">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <title>Profile</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>Responsive Profile Page</title>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css?version=004" />
+    <link rel="stylesheet" href="style.css?version=004">
+    <style>
+       
 
-    <style>    
-   body {
-    background-color: #f8f9fa;
-    color: #343a40;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-}
-
-.container {
-    padding: 20px;
-    min-width: 1200px;
-    margin: 0 auto;
-}
-
-footer {
-            background-color: #0927D8;
-            color: #f8f9fa;
-            padding: 20px;
-            width: 100%;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .names {
-            text-align: center;
-        }
-
-        .left-content {
-            flex: 1;
-            text-align: left; /* Align content to the left */
-        }
-
-        .right-content {
-            text-align: right; /* Align content to the right */
-        }
-
-        .left-content p,
-        .right-content p {
-            margin: 0;
-        }
-
-
-        .container {
-            max-width: 1100px;
-            margin: 120px auto 20px;
-            padding: 0 20px;
-        }
-
-        .post {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            padding: 20px;
-            position: relative;
-        }
-
-        .post h2 {
-            margin-bottom: 10px;
-        color: #007bff;
-        cursor: pointer;
-        }
-
-        .post p {
-            margin-bottom: 15px;
-        }
-
-        .post-meta {
-            color: #6c757d;
-            font-size: 0.8rem;
-        }
-      .btn-delete {
-     
-            font-size: 14px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1;
-            background-color: #7D0A0A;
-        }
-
-        .btn-edit {
-            position: absolute;
-            top: 10px;
-            right: 120px;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .container {
-                padding: 0 10px;
-            }
-        }
-        .post-img {
-            max-width: 100%;
-        height: 100px;
-        object-fit: cover; 
-        border-radius: 8px;
-        }
-
-        .post-buttons {
-        top: 10px;
-        right: 10px;
-    }
-
-    .post-buttons button {
-        margin-left: 5px;
-        padding: 5px 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    .dropdown {
+.dropdown {
   position: relative;
   display: inline-block;
 }
@@ -186,13 +82,73 @@ footer {
 .dropdown:hover .dropbtn {
   background-color: #2980b9;
 }
+.post {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .post h2 {
+            margin-bottom: 10px;
+        color: #007bff;
+        cursor: pointer;
+        }
+
+        .post p {
+            margin-bottom: 15px;
+        }
+
+        .post-meta {
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+       
+        .post-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover; /* Optional: maintain aspect ratio and crop if necessary */
+}
+footer {
+            background-color: #0927D8;
+            color: #f8f9fa;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .names {
+            text-align: center;
+        }
+
+        .left-content {
+            flex: 1;
+            text-align: left; /* Align content to the left */
+        }
+
+        .right-content {
+            text-align: right; /* Align content to the right */
+        }
+
+        .left-content p,
+        .right-content p {
+            margin: 0;
+        }
+
 
     </style>
-</head>
-<body>
+  </head>
+  <body>
 
-
-<header>
+  <header>
     <div class="logo">
         <img src="images/psuLOGO.png" alt="">
     </div>
@@ -212,37 +168,92 @@ footer {
         <a href="logout.php" class="btn">Logout</a>
     </nav>
 </header>
+    <div class="header__wrapper">
+    <div class="h"></div>
+      <div class="cols__container">
+        <div class="left__col">
+          <div class="img__container">
+            <img src="img/user.jpeg" alt="Anna Smith" />
+            <span></span>
+          </div>
+          <?php
 
-<?php
+
+$user_id = $_SESSION['studID'];
+
+$sql = "SELECT * FROM users WHERE studID = '$user_id'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc(); // Fetch the row as an associative array
+    $fname = $row['firstname'];
+    $lname = $row['lastname'];
+    $username = $row['username'];
+    $password = $row['password'];
+    $email = $row['email'];
+    $course = $row['course'];
+    $bio = $row['bio']; // Access the username property from the array
+} else {
+    // Handle the case when no rows are returned
+    // You might want to display an error message or redirect the user
+}
+
+?>
+
+          <h2><?php echo $fname . " " . $lname  ?></h2>
+          <p><?php echo $course ?> </p>
+          <p><?php echo $email ?></p>
+
+          <ul class="about">
+            
+          </ul>
+
+          <div class="content">
+            <p>
+              <?php echo $bio ?> 
+            </p>
+
+            <ul>
+              <!-- <li><i class="fab fa-twitter"></i></li>
+              <i class="fab fa-pinterest"></i>
+              <i class="fab fa-facebook"></i>
+              <i class="fab fa-dribbble"></i> -->
+            </ul>
+          </div>
+        </div>
+        <div class="right__col">
+       
+
+          <div class="photos">
+          <div class="container">
+          <h1>My Favorites</h1>
+          <?php
 include("0conn.php"); // Include your database connection file
 
-session_start();
-
-if (!isset($_SESSION['studID'])) {
-    header("Location: logintry.php");
-    exit;
-}
 
 $user_id = $_SESSION['studID'];
 
 // Query to retrieve shared posts by the current user
-$sql = "SELECT posts.*, favorites.fav_created_at
+$sql = "SELECT posts.*, favorites.fav_created_at, users.username AS shared_from_username
                FROM favorites 
                INNER JOIN posts ON favorites.postID = posts.postID 
+               INNER JOIN shared_posts ON posts.postID = shared_posts.postID
+               INNER JOIN users ON shared_posts.shared_from_studID = users.studID
                WHERE favorites.studID = '$user_id' 
                ORDER BY favorites.fav_created_at DESC";
+
 
 $result_shared = $conn->query($sql);
 
 ?>
 
-
-<h1>My Favorite Posts</h1>
     <?php
     if ($result_shared !== false && $result_shared->num_rows > 0) {
         while ($row_shared = $result_shared->fetch_assoc()) {
             ?>
             <div class="post" id="post_<?php echo $row_shared['postID'] ?>">
+            <h3><?php echo $row_shared['shared_from_username'] ?></h3>
+                <h3><?php echo formatPostDate($row_shared['created_at']) ?></h3>
                 <h2><?php echo $row_shared['title'] ?></h2>
                 <p><?php echo $row_shared['content'] ?></p>
 
@@ -262,7 +273,10 @@ $result_shared = $conn->query($sql);
     }
     ?>
 </div>
-
+          </div>
+        </div>
+      </div>
+    </div>
 
     <footer>
         <div class="footer-content">
@@ -283,8 +297,49 @@ $result_shared = $conn->query($sql);
             <p>Janela Tamayo and Joanna Marie Areniego</p>
         </div>
     </footer>
-    
-    <?php
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+function deleteSharedPost(postId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this shared post!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'deleteSharedPost.php',
+                method: 'POST',
+                data: { post_id: postId },
+                success: function(response){
+                    Swal.fire(
+                        'Deleted!',
+                        'Your shared post has been deleted.',
+                        'success'
+                    ).then(() => {
+                        $('#post_' + postId).remove();
+                        location.reload();
+                    });
+                }
+            });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelled',
+                'Your shared post is safe :)',
+                'error'
+            );
+        }
+    });
+}
+
+
+</script>
+  </body>
+</html>
+<?php
     function formatPostDate($postDate) {
         date_default_timezone_set('Asia/Manila');
     
@@ -317,4 +372,6 @@ $result_shared = $conn->query($sql);
                 }
             }
         }
-    }?>
+    }
+?>
+
