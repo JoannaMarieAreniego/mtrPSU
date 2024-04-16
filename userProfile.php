@@ -16,6 +16,80 @@ $results = $conn->query($sqls);
 
 
 ?>
+<?php
+$user_id = $_SESSION['studID'];
+
+// Handle profile picture update
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
+    // Check if a file was uploaded
+    if ($_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+        $file_tmp = $_FILES['profile_picture']['tmp_name'];
+        $file_name = $_FILES['profile_picture']['name'];
+        $file_size = $_FILES['profile_picture']['size'];
+        $file_type = $_FILES['profile_picture']['type'];
+
+        // Check file size (max 5MB)
+        if ($file_size > 5 * 1024 * 1024) {
+            echo "Error: File size exceeds 5MB limit.";
+            exit;
+        }
+
+        // Restrict file types to images only
+        $allowed_types = array("image/jpeg", "image/png", "image/gif");
+        if (!in_array($file_type, $allowed_types)) {
+            echo "Error: Only JPG, PNG, and GIF files are allowed.";
+            exit;
+        }
+
+        // Generate a unique filename to prevent overwriting existing files
+        $new_file_name = uniqid('', true) . '_' . $file_name;
+
+        // Move the uploaded file to the uploads directory
+        $upload_path = "images/";
+        $file_path = $upload_path . $new_file_name;
+        if (move_uploaded_file($file_tmp, $file_path)) {
+            // Update the user's profile picture in the database
+            $sql = "UPDATE users SET profile_picture = '$file_path' WHERE studID = '$user_id'";
+            if ($conn->query($sql) === TRUE) {
+                // Redirect back to the profile page
+                header("Location: userProfile.php");
+                exit;
+            } else {
+                echo "Error updating profile picture: " . $conn->error;
+                exit;
+            }
+        } else {
+            echo "Error uploading file.";
+            exit;
+        }
+    } else {
+        echo "Error uploading file: " . $_FILES['profile_picture']['error'];
+        exit;
+    }
+}
+
+?>
+<?php
+$user_id = $_SESSION['studID'];
+
+$sql = "SELECT * FROM users WHERE studID = '$user_id'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc(); // Fetch the row as an associative array
+    $fname = $row['firstname'];
+    $lname = $row['lastname'];
+    $username = $row['username'];
+    $password = $row['password'];
+    $email = $row['email'];
+    $course = $row['course'];
+    $bio = $row['bio'];
+    $dp = $row['profile_picture']; // Access the username property from the array
+} else {
+   
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -150,6 +224,17 @@ footer {
  /* Change to the desired highlight color */
     color: black; /* Change to the desired text color */
 }
+.bt {
+    display: inline-block;
+    padding: 4px;
+    background-color: #FFDA27;
+    color: black;
+    text-decoration: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+    }
 
     </style>
   </head>
@@ -165,7 +250,7 @@ footer {
         <a href="profile.php" class="btn active">Profile</a>
         <div class="dropdown-content">
         <a href="userProfile.php" class="button active">Profile</a>
-        <a href="profile.php" class="button">Posts</a>
+        <a href="profile.php" class="button">Shared Posts</a>
         <a href="favorites.php" class="button">Favorites</a>
   </div>
     </div>
@@ -181,46 +266,27 @@ footer {
       <div class="cols__container">
         <div class="left__col">
           <div class="img__container">
-            <img src="img/user.jpeg" alt="Anna Smith" />
+            <img src="<?php echo $dp ?>" alt="Profile Picture" />
             <span></span>
           </div>
-          <?php
 
-
-$user_id = $_SESSION['studID'];
-
-$sql = "SELECT * FROM users WHERE studID = '$user_id'";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc(); // Fetch the row as an associative array
-    $fname = $row['firstname'];
-    $lname = $row['lastname'];
-    $username = $row['username'];
-    $password = $row['password'];
-    $email = $row['email'];
-    $course = $row['course'];
-    $bio = $row['bio']; // Access the username property from the array
-} else {
-    // Handle the case when no rows are returned
-    // You might want to display an error message or redirect the user
-}
-
-?>
 
           <h2><?php echo $fname . " " . $lname  ?></h2>
           <p><?php echo $course ?> </p>
-          <p><?php echo $email ?></p>
-
+          <p><?php echo $email ?></p> <br><br>
+          <h4>Update Profile Picture</h4> 
+          <form action="" method="post" enctype="multipart/form-data">
+                    <input type="file" name="profile_picture" accept="image/*" required>
+                    <button type="submit" class="bt">Update</button>
+                </form>
           <ul class="about">
-            
           </ul>
 
           <div class="content">
             <p>
               <?php echo $bio ?> 
             </p>
-
+           
             <ul>
               <!-- <li><i class="fab fa-twitter"></i></li>
               <i class="fab fa-pinterest"></i>

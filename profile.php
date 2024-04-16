@@ -16,6 +16,27 @@ $results = $conn->query($sqls);
 
 
 ?>
+<?php
+$user_id = $_SESSION['studID'];
+
+$sql = "SELECT * FROM users WHERE studID = '$user_id'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc(); // Fetch the row as an associative array
+    $fname = $row['firstname'];
+    $lname = $row['lastname'];
+    $username = $row['username'];
+    $password = $row['password'];
+    $email = $row['email'];
+    $course = $row['course'];
+    $bio = $row['bio'];
+    $dp = $row['profile_picture']; // Access the username property from the array
+} else {
+   
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -181,32 +202,10 @@ footer {
       <div class="cols__container">
         <div class="left__col">
           <div class="img__container">
-            <img src="img/user.jpeg" alt="Anna Smith" />
+          <img src="<?php echo $dp ?>" alt="Profile Picture" />
             <span></span>
           </div>
-          <?php
 
-
-$user_id = $_SESSION['studID'];
-
-$sql = "SELECT * FROM users WHERE studID = '$user_id'";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc(); // Fetch the row as an associative array
-    $fname = $row['firstname'];
-    $lname = $row['lastname'];
-    $username = $row['username'];
-    $password = $row['password'];
-    $email = $row['email'];
-    $course = $row['course'];
-    $bio = $row['bio']; // Access the username property from the array
-} else {
-    // Handle the case when no rows are returned
-    // You might want to display an error message or redirect the user
-}
-
-?>
 
           <h2><?php echo $fname . " " . $lname  ?></h2>
           <p><?php echo $course ?> </p>

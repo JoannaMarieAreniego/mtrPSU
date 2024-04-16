@@ -51,7 +51,7 @@ $conn->close();
         .container {
             flex: 1; 
             padding: 20px; 
-            min-width: 500px; 
+            min-width: 1400px; 
             margin: 0 auto;
         }
 
