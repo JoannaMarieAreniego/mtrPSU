@@ -31,7 +31,7 @@
         padding: 8px;
     }
 
-    tr:hover {background-color: #007bff;}
+    tr:hover {background-color: #DDDDDD;}
 
     .delete-btn {
         background-color: #f44336;
@@ -73,11 +73,14 @@
     }
 
     footer {
-            background-color: #0927D8;
-            color: #f8f9fa;
-            padding: 20px;
-            width: 100%;
-        }
+    background-color: #0927D8;
+    color: #f8f9fa;
+    padding: 20px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
 
         .footer-content {
             display: flex;
@@ -149,6 +152,17 @@
 .dropdown:hover .dropbtn {
   background-color: #2980b9;
 }
+.button {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+}
+
+.button.active {
+    background-color: #FFDA27;
+ /* Change to the desired highlight color */
+    color: black; /* Change to the desired text color */
+}
 
     @media only screen and (max-width: 600px) {
         .container {
@@ -171,9 +185,10 @@
         <div class="dropdown">
         <a href="reportedPost.php" class="btn active">Reports</a>
         <div class="dropdown-content">
-        <a href="reportedPost.php">Pending</a>
-        <a href="rejectedPost.php">Rejected</a>
-        <a href="approvedPost.php" class="btn active">Approved</a>
+        <a href="reportedPost.php" class="button">Pending</a>
+        <a href="rejectedPost.php" class="button">Rejected</a>
+        <a href="approvedPost.php" class="button active">Approved</a>
+        <a href="report_datatable.php" class="button">Export</a>
   </div>
     </div>
         <a href="manageAccount.php" class="btn">Manage Accounts</a>

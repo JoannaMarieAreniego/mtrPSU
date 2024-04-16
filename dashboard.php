@@ -378,12 +378,7 @@ if ($usersByCourseResult->num_rows > 0) {
             <h1>PSUnian Space</h1>
         </div>
         <nav>
-        <div class="dropdown">
             <a href="dashboard.php" class="btn active">Dashboard</a>
-            <div class="dropdown-content">
-        <a href="report_datatable.php" class="btn active">Export</a>
-  </div>
-    </div>
             <a href="admin_newsfeed.php" class="btn">Newsfeed</a>
             <a href="reportedPost.php" class="btn">Reports</a>
             <a href="manageAccount.php" class="btn">Manage Accounts</a>

@@ -159,12 +159,7 @@ justify-content: flex-end;
             border-radius: 5px;
             resize: vertical;
         }
-        footer {
-            background-color: #0927D8;
-            color: #f8f9fa;
-            padding: 20px;
-            width: 100%;
-        }
+
 
         .footer-content {
             display: flex;
@@ -189,6 +184,15 @@ justify-content: flex-end;
         .right-content p {
             margin: 0;
         }
+        footer {
+    background-color: #0927D8;
+    color: #f8f9fa;
+    padding: 20px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
 
 
 .ck-editor__editable[role="textbox"] {
@@ -209,6 +213,7 @@ justify-content: flex-end;
         <a href="profile.php" class="btn">Profile</a>
         <a href="3newsfeed.php" class="btn">Newsfeed</a>
         <a href="createPost.php" class="btn active">Create Post</a>
+        <a href="groups.php" class="btn">Groups</a>
         <a href="faq.php" class="btn">FAQs</a>
         <a href="logout.php" class="btn">Logout</a>
     </nav>

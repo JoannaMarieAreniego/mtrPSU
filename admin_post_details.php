@@ -38,6 +38,7 @@ if (isset($_GET['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
     <title>Post Details</title>
     <style>
 body {
@@ -104,11 +105,16 @@ body {
         }
 
         footer {
-            background-color: #0927D8;
-            color: #f8f9fa;
-            padding: 20px;
-            width: 100%;
-        }
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #0927D8;
+    color: #f8f9fa;
+    text-align: center;
+    padding: 20px;
+}
+
 
         .footer-content {
             display: flex;
@@ -192,7 +198,7 @@ body {
             <?php } ?>
         </div>
     </div>
-    
+            </div>
     <footer>
         <div class="footer-content">
             <div class="left-content">

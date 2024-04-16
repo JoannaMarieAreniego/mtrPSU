@@ -277,20 +277,36 @@ if ($result->num_rows > 0) {
         method: 'POST',
         data: { postID: postID },
         success: function(response) {
-            if (response.trim() === 'Error') {
-                alert('Error resharing post. Please try again.');
-                return;
-            }
-            alert('Post reshared successfully');
+    if (response.trim() === 'Error') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error resharing post',
+            text: 'Please try again.'
+        });
+        return;
+    }
+    Swal.fire({
+        icon: 'success',
+        title: 'Post reshared successfully'
+    }).then((result) => {
+        if (result.isConfirmed) {
             $('.posts-container').prepend(response);
             location.reload();
-        },
+        }
+    });
+},
+
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
-            alert('Error resharing post. Please try again.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error resharing post',
+                text: 'Please try again.'
+            });
         }
     });
 }
+
 
 function reportPost(postID) {
     var reasonOptions = ["Offensive content", "Spam", "Inappropriate", "Other"];
@@ -345,19 +361,27 @@ function toggleCustomReason(checkbox) {
 }
 
 function savePost(postID) {
-        $.ajax({
-            url: 'toggleFavorite.php',
-            method: 'POST',
-            data: { postID: postID },
-            success: function(response) {
-                // Display success message or handle response
-                alert(response);
-            },
-            error: function() {
-                alert('An error occurred while saving the post.');
-            }
-        });
-    }
+    $.ajax({
+        url: 'toggleFavorite.php',
+        method: 'POST',
+        data: { postID: postID },
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Post Saved',
+                text: response
+            });
+        },
+        error: function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while saving the post.'
+            });
+        }
+    });
+}
+
     function toggleDiv(postID) {
     var div = document.getElementById("myDiv-" + postID);
     if (div.style.display === "none") {

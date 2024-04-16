@@ -82,11 +82,13 @@
             color: red;
         }
         footer {
-            background-color: #0927D8;
-            color: #f8f9fa;
-            padding: 20px;
-            width: 100%;
-        }
+    background-color: #0927D8;
+    color: #f8f9fa;
+    padding: 20px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
 
         .footer-content {
             display: flex;

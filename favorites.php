@@ -30,7 +30,7 @@ $results = $conn->query($sqls);
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
     <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css?version=004" />
+    <link rel="stylesheet" href="css/style.css?version=005" />
     <link rel="stylesheet" href="style.css?version=004">
     <style>
        
@@ -142,6 +142,17 @@ footer {
         .right-content p {
             margin: 0;
         }
+        .button {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+}
+
+.button.active {
+    background-color: #FFDA27;
+ /* Change to the desired highlight color */
+    color: black; /* Change to the desired text color */
+}
 
 
     </style>
@@ -157,13 +168,14 @@ footer {
     <div class="dropdown">
         <a href="profile.php" class="btn active">Profile</a>
         <div class="dropdown-content">
-        <a href="userProfile.php">Profile</a>
-        <a href="profile.php">Posts</a>
-        <a href="favorites.php">Favorites</a>
+        <a href="userProfile.php" class="button">Profile</a>
+        <a href="profile.php" class="button">Shared Posts</a>
+        <a href="favorites.php" class="button active">Favorites</a>
   </div>
     </div>
         <a href="3newsfeed.php" class="btn">Newsfeed</a>
         <a href="createPost.php" class="btn">Create Post</a>
+        <a href="groups.php" class="btn">Groups</a>
         <a href="faq.php" class="btn">FAQs</a>
         <a href="logout.php" class="btn">Logout</a>
     </nav>

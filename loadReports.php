@@ -23,6 +23,6 @@ if (mysqli_num_rows($result) > 0) {
     }
     echo "</table>";
 } else {
-    echo "No users found.";
+    echo "No reports found.";
 }
 ?>

@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css?version=002">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <title>Manage Accounts</title>
     <style>
 
@@ -73,11 +75,14 @@
     }
 
     footer {
-            background-color: #0927D8;
-            color: #f8f9fa;
-            padding: 20px;
-            width: 100%;
-        }
+    background-color: #0927D8;
+    color: #f8f9fa;
+    padding: 20px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
 
         .footer-content {
             display: flex;
@@ -168,26 +173,58 @@
         }
 
         function deleteUser(studID) {
-            if (confirm("Are you sure you want to delete this account?")) {
-                $.ajax({
-                    url: 'deleteAccount.php',
-                    method: 'POST',
-                    data: { studID: studID },
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            loadAccounts();
-                            location.reload();
-                        } else {
-                            alert('Account Deleted Successfully');
-                            location.reload();
-                        }
-                    },
-                    error: function() {
-                        alert('Error occurred while deleting account.');
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'deleteAccount.php',
+                method: 'POST',
+                data: { studID: studID },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire(
+                            'Deleted!',
+                            'The account has been deleted.',
+                            'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                loadAccounts();
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            'Deleted!',
+                            'The account has been deleted.',
+                            'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                loadAccounts();
+                                location.reload();
+                            }
+                        });
                     }
-                });
-            }
+                },
+                error: function() {
+                    Swal.fire(
+                        'Error!',
+                        'An error occurred while deleting the account.',
+                        'error'
+                    );
+                }
+            });
         }
+    });
+}
+
+
     </script>
 </body>
 </html>

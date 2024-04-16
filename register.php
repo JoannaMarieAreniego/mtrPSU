@@ -371,6 +371,7 @@
     function goToLoginPage() {
         window.location.href = "logintry.php";
     }
+    
 </script>
 </body>
 </html>
