@@ -32,12 +32,12 @@ if(isset($_GET['post_id'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
     
     <title>Profile</title>
 
     <style>
-       
-.container {
+        .container {
     max-width: 1200px;
     margin: 20px auto;
     padding: 0 20px;
@@ -176,29 +176,49 @@ if(isset($_GET['post_id'])){
             <input type="text" id="title" name="title" value="<?php echo $title ?>"><br><br>
             <label for="content">Content:</label><br>
             <textarea id="content" name="content" rows="4" cols="50"><?php echo isset($content) ? $content : ''; ?></textarea><br><br>
-            <input type="submit" id="updateButton" name="update" value="Update Post">
+            <input type="submit" id="updateButton" name="update" value="Update Post" class="btn">
         </form>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script>
             $(document).ready(function() {
                 $("#updateForm").submit(function(event) {
                     event.preventDefault(); // Prevent the form from submitting normally
 
-                    if (confirm("Are you sure you want to update this post?")) {
-                        var formData = $(this).serialize();
-                        $.ajax({
-                            type: "POST",
-                            url: 'update.php',
-                            data: formData,
-                            success: function(response) {
-                                alert("Post updated successfully.");
-                                window.location.href = "userProfile.php";
-                            },
-                            error: function(xhr, status, error) {
-                                alert("Error updating post: " + xhr.responseText);
-                            }
-                        });
-                    }
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You are about to update this post.",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var formData = $(this).serialize();
+                            $.ajax({
+                                type: "POST",
+                                url: "update.php",
+                                data: formData,
+                                success: function(response) {
+                                    Swal.fire(
+                                        "Updated!",
+                                        "Your post has been updated.",
+                                        "success"
+                                    ).then(() => {
+                                        window.location.href = "userProfile.php";
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    Swal.fire(
+                                        "Error!",
+                                        "There was an error updating your post: " + xhr.responseText,
+                                        "error"
+                                    );
+                                },
+                            });
+                        }
+                    });
                 });
             });
         </script>
@@ -206,6 +226,7 @@ if(isset($_GET['post_id'])){
     <?php endif; ?>
 </div>
 
+<footer>
 <footer>
 <div class="footer-content">
             <div class="left-content">
@@ -225,10 +246,10 @@ if(isset($_GET['post_id'])){
             <p>Janela Tamayo and Joanna Marie Areniego</p>
         </div>
 </footer>
+</footer>
 
 </body>
 </html>
-</script>
 <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 <script>
     ClassicEditor
@@ -237,3 +258,4 @@ if(isset($_GET['post_id'])){
             console.error( error );
         } );
 </script>
+

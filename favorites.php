@@ -244,21 +244,21 @@ include("0conn.php"); // Include your database connection file
 
 $user_id = $_SESSION['studID'];
 
-// Query to retrieve shared posts by the current user
+$user_id = $_SESSION['studID'];
+
+// Query to retrieve favorite posts by the current user
 $sql = "SELECT posts.*, favorites.fav_created_at, users.username AS shared_from_username
-               FROM favorites 
-               INNER JOIN posts ON favorites.postID = posts.postID 
-               INNER JOIN shared_posts ON posts.postID = shared_posts.postID
-               INNER JOIN users ON shared_posts.shared_from_studID = users.studID
-               WHERE favorites.studID = '$user_id' 
-               ORDER BY favorites.fav_created_at DESC";
+FROM favorites 
+INNER JOIN posts ON favorites.postID = posts.postID 
+INNER JOIN users ON posts.studID = users.studID
+WHERE favorites.studID = '$user_id' 
+ORDER BY favorites.fav_created_at DESC";
+
 
 
 $result_shared = $conn->query($sql);
 
-?>
 
-    <?php
     if ($result_shared !== false && $result_shared->num_rows > 0) {
         while ($row_shared = $result_shared->fetch_assoc()) {
             ?>

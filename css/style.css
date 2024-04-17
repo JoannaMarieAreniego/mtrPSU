@@ -148,7 +148,6 @@ a {
 }
 .header__wrapper .cols__container .right__col .photos img {
   max-width: 20%;
-
   height: 50%;
   object-fit: cover;
 }

@@ -50,7 +50,7 @@ if ($result->num_rows > 0) {
         <?php if (!empty($row['shared_by_studID'])): ?>
                 <p><em>Shared by <?php echo $row['shared_by_username']; ?>  <?php echo formatSharedDate($row['shared_at']); ?></em></p>
             <?php endif; ?>
-            <h2><a href="post_details.php?id=<?php echo $row['postID']; ?>"><?php echo $row['title'] ?></a></h2>
+            <h3><?php echo $row['title'] ?></h3>
            
             <p><?php echo $row['content'] ?></p>
             <div class="post-container">
@@ -84,7 +84,7 @@ if ($result->num_rows > 0) {
                 </div>
                 <br> <br>
                 <button class="btn <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? 'liked' : ''; ?>" id="likeButton-<?php echo $row['postID']; ?>" onclick="likePost(<?php echo $row['postID']; ?>)">
-                <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? $likeCount  . " " . 'Liked' :  'Like'; ?>
+                <?php echo (checkUserLikedPost($row['postID'], $currentUserID)) ? $likeCount  . " " . 'Like' : $likeCount  . " " . 'Like'; ?>
 </button>
 
                 </button>

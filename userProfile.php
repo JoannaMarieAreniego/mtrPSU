@@ -178,7 +178,7 @@ if ($result->num_rows > 0) {
        
         .post-image {
     max-width: 100%;
-    height: auto;
+    height: 500px;
     border-radius: 8px;
     object-fit: cover; /* Optional: maintain aspect ratio and crop if necessary */
 }
